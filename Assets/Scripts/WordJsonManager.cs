@@ -10,6 +10,10 @@ public class Word
 {
     public string word;
     public string definition;
+
+    public int numTyped;
+    public int numCorrect;
+    
 }
 
 public class WordJsonManager : MonoBehaviour
@@ -17,12 +21,11 @@ public class WordJsonManager : MonoBehaviour
     private Word[] m_words;
     public Word[] GetWords()
     {
+        
         return m_words;
     }
 
-    [Header("UI Elements")]
-    public TMP_InputField m_wordInput;
-    public TMP_InputField m_definitionInput;
+
     static string m_fileName = "words.json";
     string m_filePath;
 
@@ -38,7 +41,7 @@ public class WordJsonManager : MonoBehaviour
         {
             m_filePath = Path.Combine(Application.streamingAssetsPath, m_fileName);
         }
-        
+
 
     }
 
@@ -48,11 +51,7 @@ public class WordJsonManager : MonoBehaviour
 
     }
 
-    public void OnSubmit()
-    {
-        InsertWord(m_wordInput.text, m_definitionInput.text);
-        Debug.Log(m_words[m_words.Length - 1].word + ", " + m_words[m_words.Length - 1].definition);
-    }
+    
 
     public void InsertWord(string word, string definition)
     {
@@ -146,5 +145,28 @@ public class WordJsonManager : MonoBehaviour
     {
         SaveToLocal();
         SaveToCloud();
+    }
+
+    public void UpdateWord(Word word)
+    {
+        if (m_words == null)
+        {
+            Debug.LogError("Words array is null!");
+            return;
+        }
+        List<Word> wordList = new List<Word>(m_words);
+        int index = wordList.FindIndex(w => w.word == word.word);
+        if (index == -1)
+        {
+            Debug.LogError("Word not found!");
+            return;
+        }
+        wordList[index] = word;
+        m_words = wordList.ToArray();
+
+        SaveToLocal();
+        SaveToCloud();
+
+        Debug.Log("Updated " + word.word);
     }
 }

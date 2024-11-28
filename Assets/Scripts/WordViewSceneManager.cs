@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class WordViewSceneManager : MonoBehaviour
 {
-
+    [Header("UI Elements")]
+    public TMP_InputField m_wordInput;
+    public TMP_InputField m_definitionInput;
     public WordJsonManager wordJsonManager;
     public ScrollViewController scrollViewController;
 
@@ -25,5 +28,10 @@ public class WordViewSceneManager : MonoBehaviour
     {
         // Load the Lobby scene
         SceneManager.LoadScene("Lobby");
+    }
+
+    public void OnSubmit()
+    {
+        wordJsonManager.InsertWord(m_wordInput.text, m_definitionInput.text);
     }
 }

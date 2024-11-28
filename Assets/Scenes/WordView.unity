@@ -512,8 +512,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597a8e77bd09e6641b514b11b75fafaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_wordInput: {fileID: 365837763}
-  m_definitionInput: {fileID: 604632724}
 --- !u!1 &365837761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,6 +2193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c55691577be48940bab260852eb59f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_wordInput: {fileID: 365837763}
+  m_definitionInput: {fileID: 604632724}
   wordJsonManager: {fileID: 359394109}
   scrollViewController: {fileID: 1926491635}
 --- !u!1 &1352829361
@@ -2355,8 +2355,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 359394109}
-        m_TargetAssemblyTypeName: WordJsonManager, Assembly-CSharp
+      - m_Target: {fileID: 1291316435}
+        m_TargetAssemblyTypeName: WordViewSceneManager, Assembly-CSharp
         m_MethodName: OnSubmit
         m_Mode: 1
         m_Arguments:
