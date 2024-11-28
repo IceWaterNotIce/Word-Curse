@@ -28,12 +28,9 @@ public class WordJsonManager : MonoBehaviour
     string m_filePath = Path.Combine(Application.streamingAssetsPath, m_fileName);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    async void Start()
+    void Start()
     {
-        //wait for 100ms to make sure the cloud save service is initialized
-        await Task.Delay(100);
-        LoadFromCloud();
-        SaveToLocal();
+
     }
 
     // Update is called once per frame
@@ -122,13 +119,13 @@ public class WordJsonManager : MonoBehaviour
         // save word json to cloud save
         CloudSaveManager.Instance.SavePlayerFile(m_fileName, fileBytes);
     }
-    public async void LoadFromCloud()
+    public async Task LoadFromCloud()
     {
         byte[] fileBytes = await CloudSaveManager.Instance.LoadPlayerFile(m_fileName);
         if (fileBytes == null)
         {
             SaveToCloud();
-            LoadFromCloud();
+            await LoadFromCloud();
             return;
         }
         string jsonString = Encoding.UTF8.GetString(fileBytes);

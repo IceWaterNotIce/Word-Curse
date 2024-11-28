@@ -4,9 +4,6 @@ using TMPro;
 public class LobbySceneManager : MonoBehaviour
 {
 
-    [Header("UI Elements")]
-    public TMP_Text TmpPlayerId;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,9 +22,5 @@ public class LobbySceneManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("WordView");
     }
 
-    public void UpdatePlayerId()
-    {
-        // Update the PlayerId text with the current player id
-        TmpPlayerId.text = $"Player ID: {AuthManager.Instance.GetPlayerId()}";
-    }
+
 }

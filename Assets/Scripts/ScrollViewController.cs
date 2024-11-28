@@ -15,8 +15,7 @@ public class ScrollViewController : MonoBehaviour
 
     void Start()
     {
-        Task.Delay(1000);
-        LoadWords();
+        
     }
 
     public void LoadWords()

@@ -10,7 +10,11 @@ public class CloudSaveManager : Singleton<CloudSaveManager>
     async void Start()
     {
         await UnityServices.InitializeAsync();
-        AuthManager.Instance.SignInAnonymously();
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            Debug.LogError("User is not signed in");
+            return;
+        }
     }
 
     // Update is called once per frame

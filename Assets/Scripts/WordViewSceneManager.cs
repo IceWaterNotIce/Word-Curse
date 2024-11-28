@@ -3,10 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class WordViewSceneManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
+    public WordJsonManager wordJsonManager;
+    public ScrollViewController scrollViewController;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+     async void Start()
+    {
+        await wordJsonManager.LoadFromCloud();
+        wordJsonManager.SaveToLocal();
+        scrollViewController.LoadWords();
     }
 
     // Update is called once per frame
