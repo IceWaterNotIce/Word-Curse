@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Text;
 using Newtonsoft.Json;
 using TMPro;
-using Unity.Services.CloudSave;
 
 public class Word
 {
@@ -25,11 +24,21 @@ public class WordJsonManager : MonoBehaviour
     public TMP_InputField m_wordInput;
     public TMP_InputField m_definitionInput;
     static string m_fileName = "words.json";
-    string m_filePath = Path.Combine(Application.streamingAssetsPath, m_fileName);
+    string m_filePath;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Set the file path based on the platform
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            m_filePath = Path.Combine(Application.persistentDataPath, m_fileName);
+        }
+        else
+        {
+            m_filePath = Path.Combine(Application.streamingAssetsPath, m_fileName);
+        }
+        
 
     }
 
