@@ -15,25 +15,25 @@ public class Word
 
 public class WordJsonManager : MonoBehaviour
 {
-    Word[] m_words;
+    private Word[] m_words;
+    public Word[] GetWords()
+    {
+        return m_words;
+    }
 
     [Header("UI Elements")]
     public TMP_InputField m_wordInput;
     public TMP_InputField m_definitionInput;
-
+    static string m_fileName = "words.json";
+    string m_filePath = Path.Combine(Application.streamingAssetsPath, m_fileName);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {
-        //if file does not exist, create a new file
-        if (!File.Exists(Path.Combine(Application.streamingAssetsPath, "words.json")))
-        {
-            File.Create(Path.Combine(Application.streamingAssetsPath, "words.json")).Close();
-        }
         //wait for 100ms to make sure the cloud save service is initialized
         await Task.Delay(100);
-        LoadFromCloud("words.json");
-        SaveToLocal(m_words);
+        LoadFromCloud();
+        SaveToLocal();
     }
 
     // Update is called once per frame
@@ -62,12 +62,11 @@ public class WordJsonManager : MonoBehaviour
         wordList.Add(newWord);
         m_words = wordList.ToArray();
 
-        SaveToLocal(m_words);
-        SaveToCloud("words.json");
+        SaveToLocal();
+        SaveToCloud();
 
         Debug.Log("Inserted " + word);
     }
-
     public void DeleteWord(string word)
     {
         if (m_words == null)
@@ -79,38 +78,57 @@ public class WordJsonManager : MonoBehaviour
         wordList.RemoveAll(w => w.word == word);
         m_words = wordList.ToArray();
 
-        SaveToLocal(m_words);
-        SaveToCloud("words.json");
+        SaveToLocal();
+        SaveToCloud();
 
         Debug.Log("Deleted " + word);
     }
 
-    public void SaveToLocal(Word[] words)
+    public void LoadFromLocal()
     {
-        string json = JsonConvert.SerializeObject(words);
-        string filePath = Path.Combine(Application.streamingAssetsPath, "words.json");
+        // if environment is web, return
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            return;
+        }
+        // if file does not exist, create it
+        if (!File.Exists(m_filePath))
+        {
+            File.Create(m_filePath).Close();
+        }
+
+        string filePath = m_filePath;
+        string json = File.ReadAllText(filePath);
+        Word[] words = JsonConvert.DeserializeObject<Word[]>(json);
+        m_words = words;
+    }
+    public void SaveToLocal()
+    {
+        // if environment is web, return
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            return;
+        }
+        string json = JsonConvert.SerializeObject(m_words);
+        string filePath = m_filePath;
         File.WriteAllText(filePath, json);
     }
 
-
-    public void SaveToCloud(string fileName)
+    public void SaveToCloud()
     {
-        // get word json from streaming assets
-        string filePath = Path.Combine(Application.streamingAssetsPath, "words.json");
-
-        byte[] jsonData = File.ReadAllBytes(filePath);
+        string jsonData = JsonConvert.SerializeObject(m_words);
+        byte[] fileBytes = Encoding.UTF8.GetBytes(jsonData);
 
         // save word json to cloud save
-        CloudSaveManager.Instance.SavePlayerFile(fileName, jsonData);
+        CloudSaveManager.Instance.SavePlayerFile(m_fileName, fileBytes);
     }
-
-    public async void LoadFromCloud(string fileName)
+    public async void LoadFromCloud()
     {
-        byte[] fileBytes = await CloudSaveManager.Instance.LoadPlayerFile(fileName);
+        byte[] fileBytes = await CloudSaveManager.Instance.LoadPlayerFile(m_fileName);
         if (fileBytes == null)
         {
-            SaveToCloud("words.json");
-            LoadFromCloud("words.json");
+            SaveToCloud();
+            LoadFromCloud();
             return;
         }
         string jsonString = Encoding.UTF8.GetString(fileBytes);
@@ -120,7 +138,7 @@ public class WordJsonManager : MonoBehaviour
 
     void OnDestory()
     {
-        SaveToLocal(m_words);
-        SaveToCloud("words.json");
+        SaveToLocal();
+        SaveToCloud();
     }
 }
