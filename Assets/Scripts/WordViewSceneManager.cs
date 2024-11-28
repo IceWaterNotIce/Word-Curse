@@ -8,7 +8,7 @@ public class WordViewSceneManager : MonoBehaviour
     public ScrollViewController scrollViewController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-     async void Start()
+    async void Start()
     {
         await wordJsonManager.LoadFromCloud();
         wordJsonManager.SaveToLocal();

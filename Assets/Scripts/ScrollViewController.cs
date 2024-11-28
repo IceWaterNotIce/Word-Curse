@@ -15,7 +15,7 @@ public class ScrollViewController : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void LoadWords()
