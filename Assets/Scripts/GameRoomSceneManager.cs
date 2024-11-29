@@ -68,8 +68,7 @@ public class GameRoomSceneManager : MonoBehaviour
         CurrentWord.numTyped++;
         dataController.UpdateWord(CurrentWord);
 
-
-        if (TmpInputAnswer.text.ToLower() == TmpQuestion.text.ToLower())
+        if (TmpInputAnswer.text.ToLower().Trim() == TmpQuestion.text.ToLower().Trim())
         {
             //update numcorrect
             CurrentWord.numCorrect++;
