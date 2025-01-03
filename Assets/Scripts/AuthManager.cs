@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using TMPro;
+using System.Threading.Tasks;
 
 public class AuthManager : MonoBehaviour
 {
@@ -174,5 +175,26 @@ public class AuthManager : MonoBehaviour
     {
         AuthenticationService.Instance.ClearSessionToken();
         UpdateUI();
+    }
+
+    public async Task UpdatePassword(string currentPassword, string newPassword)
+    {
+        try
+        {
+            await AuthenticationService.Instance.UpdatePasswordAsync(currentPassword, newPassword);
+            UpdateUI();
+        }
+        catch (AuthenticationException ex)
+        {
+            // Compare error code to AuthenticationErrorCodes
+            // Notify the player with the proper error message
+            Debug.LogException(ex);
+        }
+        catch (RequestFailedException ex)
+        {
+            // Compare error code to CommonErrorCodes
+            // Notify the player with the proper error message
+            Debug.LogException(ex);
+        }
     }
 }
