@@ -35,14 +35,16 @@ public class ScrollViewController : MonoBehaviour
             var wordItem = Instantiate(wordItemPrefab, contentTransform).transform;
             var TmpWord = wordItem.GetChild(0);
             TmpWord.GetComponent<TextMeshProUGUI>().text = words[i].word;
-            var TmpMeaning = wordItem.GetChild(1);
+            var TmpPartOfSpeech = wordItem.GetChild(1);
+            TmpPartOfSpeech.GetComponent<TextMeshProUGUI>().text = words[i].partofSpeech.ToString();
+            var TmpMeaning = wordItem.GetChild(2);
             TmpMeaning.GetComponent<TextMeshProUGUI>().text = words[i].definition;
             // Add a button to delete the word
-            var deleteButton = wordItem.GetChild(2);
-            var word = words[i].word;
+            var deleteButton = wordItem.GetChild(3);
+            var word_id = words[i].id;
             deleteButton.GetComponent<Button>().onClick.AddListener(() =>
             {
-                wordJsonManager.DeleteWord(word);
+                wordJsonManager.DeleteWord(word_id);
                 LoadWords();
             });
         }

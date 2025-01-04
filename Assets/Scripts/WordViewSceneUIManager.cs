@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections.Generic;
 public class WordViewSceneUIManager : MonoBehaviour
 {
 
@@ -9,6 +11,7 @@ public class WordViewSceneUIManager : MonoBehaviour
     [Header("UI Elements")]
     public TMP_InputField m_wordInput;
     public TMP_InputField m_definitionInput;
+    public TMP_Dropdown m_wordDropdown;
     public WordJsonManager wordJsonManager;
     public ScrollViewController scrollViewController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,6 +20,15 @@ public class WordViewSceneUIManager : MonoBehaviour
         // show the canvas only on the right platform or in the editor
         runtimePlatform = Application.platform;
         gameObject.SetActive(runtimePlatform == ThisCanvasPlatform || runtimePlatform == RuntimePlatform.WindowsEditor);
+
+        // Set the dropdown options based on the WordType enum
+        m_wordDropdown.ClearOptions();
+        List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+        foreach (PartofSpeech partofSpeech in (PartofSpeech[])System.Enum.GetValues(typeof(PartofSpeech)))
+        {
+            options.Add(new TMP_Dropdown.OptionData(partofSpeech.ToString()));
+        }
+        m_wordDropdown.AddOptions(options);
     }
     async void OnEnable()
     {
@@ -38,6 +50,6 @@ public class WordViewSceneUIManager : MonoBehaviour
 
     public void OnSubmit()
     {
-        wordJsonManager.InsertWord(m_wordInput.text, m_definitionInput.text);
+        wordJsonManager.InsertWord(m_wordInput.text, m_definitionInput.text, (PartofSpeech)m_wordDropdown.value);
     }
 }

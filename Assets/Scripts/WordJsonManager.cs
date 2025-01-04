@@ -6,14 +6,28 @@ using System.Text;
 using Newtonsoft.Json;
 using TMPro;
 
+public enum PartofSpeech
+{
+    Noun,
+    Verb,
+    Adjective,
+    Adverb,
+    Pronoun,
+    Preposition,
+    Conjunction,
+    Interjection
+}
+
 public class Word
 {
+    public int id;
     public string word;
+    public PartofSpeech partofSpeech;
     public string definition;
-
+    public List<int> lstSynonymsId;
+    public List<int> lstAntonymsId;
     public int numTyped;
     public int numCorrect;
-    
 }
 
 public class WordJsonManager : MonoBehaviour
@@ -56,6 +70,7 @@ public class WordJsonManager : MonoBehaviour
     public void InsertWord(string word, string definition)
     {
         Word newWord = new Word();
+        newWord.id = m_words.Length;
         newWord.word = word;
         newWord.definition = definition;
         List<Word> wordList = new List<Word>();
@@ -72,21 +87,43 @@ public class WordJsonManager : MonoBehaviour
 
         Debug.Log("Inserted " + word);
     }
-    public void DeleteWord(string word)
+
+    public void InsertWord(string word, string definition, PartofSpeech partofSpeech)
     {
-        if (m_words == null)
+        Word newWord = new Word();
+        newWord.id = m_words.Length;
+        newWord.word = word;
+        newWord.definition = definition;
+        newWord.partofSpeech = partofSpeech;
+        List<Word> wordList = new List<Word>();
+        if (m_words != null)
         {
-            Debug.LogError("Words array is null!");
-            return;
+            wordList.AddRange(m_words);
         }
-        List<Word> wordList = new List<Word>(m_words);
-        wordList.RemoveAll(w => w.word == word);
+
+        wordList.Add(newWord);
         m_words = wordList.ToArray();
 
         SaveToLocal();
         SaveToCloud();
 
-        Debug.Log("Deleted " + word);
+        Debug.Log("Inserted " + word);
+    }
+    public void DeleteWord(int id)
+    {
+        if (m_words == null)
+        {
+            Debug.LogWarning("Words array is null!");
+            return;
+        }
+        List<Word> wordList = new List<Word>(m_words);
+        wordList.RemoveAll(w => w.id == id);
+        m_words = wordList.ToArray();
+
+        SaveToLocal();
+        SaveToCloud();
+
+        Debug.Log("Deleted word which id =" + id);
     }
 
     public void LoadFromLocal()
