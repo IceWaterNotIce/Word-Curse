@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameRoomSceneManager : MonoBehaviour
 {
@@ -22,7 +25,14 @@ public class GameRoomSceneManager : MonoBehaviour
 
     [SerializeField] private TMP_Text TmpCorrectRate;
     // Update is called once per frame
+    private InputSystem_Actions inputSystem;
+      private void Awake()
+    {
+        inputSystem = new InputSystem_Actions();
+        inputSystem.Enable();
+        EnhancedTouchSupport.Enable();
 
+    }
     async void Start()
     {
         await dataController.LoadFromCloud();
@@ -32,7 +42,7 @@ public class GameRoomSceneManager : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && TmpInputAnswer.text != "")
+        if (inputSystem.UI.Submit.triggered && TmpInputAnswer.text != "")
         {
             CheckAnswer();
         }
