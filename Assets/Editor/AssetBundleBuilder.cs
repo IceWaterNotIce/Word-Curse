@@ -14,7 +14,7 @@ public class AssetBundleBuilder
             BuildAssetBundleOptions.None,
             BuildTarget.StandaloneWindows
         );
-
+        
         UpdateVersionJson();
         CommitAndPushToGit();
     }

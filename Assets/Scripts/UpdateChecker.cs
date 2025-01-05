@@ -10,7 +10,6 @@ namespace InternetEmpire
     {
         private string versionCheckURL;
         private string currentVersion;
-
         public VersionConfig.VersionInfo versionInfo;
 
 
@@ -40,7 +39,7 @@ namespace InternetEmpire
                 VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(jsonResponse);
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
-                    if (info.name == Application.platform.ToString())
+                    if (info.name == PlayerPrefs.GetString("platform"))
                     {
                         versionInfo = info;
                         if (versionInfo.latestVersion != currentVersion)

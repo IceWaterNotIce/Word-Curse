@@ -71,7 +71,7 @@ namespace InternetEmpire
                 UpdateChecker updateChecker = FindFirstObjectByType<UpdateChecker>();
                 Debug.Log("有新版本可用: " + updateChecker.versionInfo.latestVersion);
                     // 可以提示用戶下載新版本
-                    MessageManager.Instance.CreateYesNoMessage("There is a new version available. This game needs to run on the latest version. Do you want to update now?", UpdateGame, QuitGame);
+                MessageManager.Instance.CreateYesNoMessage("There is a new version available. This game needs to run on the latest version. Do you want to update now?", UpdateGame, QuitGame);
             }
             else
             {

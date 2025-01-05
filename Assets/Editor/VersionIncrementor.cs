@@ -15,6 +15,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     public int callbackOrder => 0;
     public void OnPreprocessBuild(BuildReport report)
     {
+        SetPlatformVar();
         UpdateVersion();
         CommitAndPushToGit(BuildProfile.GetActiveBuildProfile().name, PlayerSettings.bundleVersion);
     }
@@ -22,6 +23,11 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     public void OnPostprocessBuild(BuildReport report)
     {
 
+    }
+
+    private void SetPlatformVar()
+    {
+        PlayerPrefs.SetString("platform", BuildProfile.GetActiveBuildProfile().name);
     }
 
     private static void UpdateVersion()
