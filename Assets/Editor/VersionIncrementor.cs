@@ -89,7 +89,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     {
         RunGitCommand("git add .");
         RunGitCommand("git commit -m \"Auto commit from Unity Builder. \"");
-        RunGitCommand("git tag -a p"+ platform +"v" + versionParts + " -m \"Auto tag from Unity Builder. \"");
+        RunGitCommand("git tag -a "+ platform +"v" + versionParts + " -m \"Auto tag from Unity Builder. \"");
         RunGitCommand("git push origin main");
         RunGitCommand("git push origin v" + versionParts);
 
