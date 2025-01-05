@@ -38,8 +38,6 @@ namespace InternetEmpire
                 // 解析 JSON 響應
                 var jsonResponse = www.downloadHandler.text;
                 VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(jsonResponse);
-                MessageManager messageManager = GameObject.FindFirstObjectByType<MessageManager>();
-                messageManager.CreateCloseMessage("Current application platform: " + Application.platform, null);
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
                     if (info.name == Application.platform.ToString())
