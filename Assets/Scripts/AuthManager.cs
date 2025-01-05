@@ -6,16 +6,6 @@ using System.Threading.Tasks;
 
 public class AuthManager : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public TMP_Text TmpPlayerId;
-
-    public TMP_Text TmpUsername;
-    public TMP_Text TmpLastPasswordUpdate;
-    public TMP_InputField UsernameInput;
-    public TMP_InputField PasswordInput;
-
-    private PlayerInfo m_PlayerInfo;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Awake()
     {
@@ -33,35 +23,15 @@ public class AuthManager : MonoBehaviour
     void Start()
     {
 
-        if (AuthenticationService.Instance.SessionTokenExists)
-        {
-            SignInAnonymously();
-        }
-        if (AuthenticationService.Instance.IsSignedIn)
-        {
-            UpdateUI();
-        }
+        
     }
-    async void UpdateUI()
+
+    void OnEnable()
     {
-        if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            TmpPlayerId.text = "Not signed in";
-            TmpUsername.text = "Not signed in";
-            TmpLastPasswordUpdate.text = "Not signed in";
-            return;
-        }
-
-        m_PlayerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
-
-        TmpPlayerId.text = m_PlayerInfo.Id ?? "Player ID not found";
-        TmpUsername.text = m_PlayerInfo.Username ?? "Username not found";
-        TmpLastPasswordUpdate.text = m_PlayerInfo.LastPasswordUpdate != null ? m_PlayerInfo.LastPasswordUpdate.Value.ToString() : "Password not updated";
     }
-    public async void SignUpWithUsernamePasswordAsync()
+  
+    public async Task SignUpWithUsernamePasswordAsync(string username, string password)
     {
-        string username = UsernameInput.text;
-        string password = PasswordInput.text;
         Debug.Log($"Username: {username}");
         Debug.Log($"Password: {password}");
         if (GameObject.Find("AuthenticatedGameObject") != null)
@@ -76,7 +46,6 @@ public class AuthManager : MonoBehaviour
 
             GameObject AuthenticatedGameObject = new GameObject("AuthenticatedGameObject");
             DontDestroyOnLoad(AuthenticatedGameObject);
-            UpdateUI();
         }
         catch (AuthenticationException ex)
         {
@@ -92,10 +61,8 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    public async void SignInWithUsernamePasswordAsync()
+    public async Task SignInWithUsernamePasswordAsync(string username, string password)
     {
-        string username = UsernameInput.text;
-        string password = PasswordInput.text;
         if (GameObject.Find("AuthenticatedGameObject") != null)
         {
             Debug.Log("Already signed in.");
@@ -108,7 +75,6 @@ public class AuthManager : MonoBehaviour
 
             GameObject AuthenticatedGameObject = new GameObject("AuthenticatedGameObject");
             DontDestroyOnLoad(AuthenticatedGameObject);
-            UpdateUI();
         }
         catch (AuthenticationException ex)
         {
@@ -124,15 +90,12 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    public async void AddUsernamePasswordAsync()
+    public async Task AddUsernamePasswordAsync(string username, string password)
     {
-        string username = UsernameInput.text;
-        string password = PasswordInput.text;
         try
         {
             await AuthenticationService.Instance.AddUsernamePasswordAsync(username, password);
             Debug.Log("Username and password added.");
-            UpdateUI();
         }
         catch (AuthenticationException ex)
         {
@@ -147,7 +110,7 @@ public class AuthManager : MonoBehaviour
             Debug.LogException(ex);
         }
     }
-    public async void SignInAnonymously()
+    public async Task SignInAnonymously()
     {
         if (AuthenticationService.Instance.IsSignedIn)
         {
@@ -157,7 +120,6 @@ public class AuthManager : MonoBehaviour
         try
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            UpdateUI();
         }
         catch (RequestFailedException ex)
         {
@@ -168,13 +130,11 @@ public class AuthManager : MonoBehaviour
     public void SignOut()
     {
         AuthenticationService.Instance.SignOut();
-        UpdateUI();
     }
 
     public void ClearSessionToken()
     {
         AuthenticationService.Instance.ClearSessionToken();
-        UpdateUI();
     }
 
     public async Task UpdatePassword(string currentPassword, string newPassword)
@@ -182,7 +142,6 @@ public class AuthManager : MonoBehaviour
         try
         {
             await AuthenticationService.Instance.UpdatePasswordAsync(currentPassword, newPassword);
-            UpdateUI();
         }
         catch (AuthenticationException ex)
         {
