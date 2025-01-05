@@ -75,8 +75,11 @@ namespace InternetEmpire
                     if (info.name == platform)
                     {
                         versionInfo = info;
-                        if (versionInfo.latestVersion != currentVersion)
+                        //compare version// greater or equal to or less than
+                        Debug.Log(new System.Version(currentVersion) < new System.Version(info.latestVersion));
+                        if (new System.Version(currentVersion) < new System.Version(info.latestVersion))
                         {
+                            Debug.Log("Version is not up to date.");
                             InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
                             initializeSceneManager.SetVersionChecked(false);
                         }
