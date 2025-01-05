@@ -39,6 +39,9 @@ namespace InternetEmpire
                 VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(jsonResponse);
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
+                    Debug.Log("info.name: " + info.name);
+                    Debug.Log("platform: " + PlayerPrefs.GetString("platform"));
+                    Debug.Log(info.name == PlayerPrefs.GetString("platform"));
                     if (info.name == PlayerPrefs.GetString("platform"))
                     {
                         versionInfo = info;
@@ -52,12 +55,8 @@ namespace InternetEmpire
                             InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
                             initializeSceneManager.SetVersionChecked(true);
                         }
-                        break;
                     }
                 }
-
-                Debug.Log("Current application platform: " + Application.platform);
-                Debug.LogError("No version info found for current platform.");
             }
         }
 
