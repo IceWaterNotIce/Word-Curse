@@ -7,7 +7,7 @@ using System.IO;
 public class AssetBundleBuilder
 {
     [MenuItem("Assets/Build AssetBundles")]
-    private static void BuildAllAssetBundles()
+    public static void BuildAllAssetBundles()
     {
         BuildPipeline.BuildAssetBundles(
             "Assets/AssetBundles",
@@ -16,7 +16,7 @@ public class AssetBundleBuilder
         );
 
         UpdateVersionJson();
-        // CommitAndPushToGit();
+        CommitAndPushToGit();
     }
 
 
