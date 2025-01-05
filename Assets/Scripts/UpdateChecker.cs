@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace InternetEmpire
@@ -10,7 +11,7 @@ namespace InternetEmpire
         private string versionCheckURL;
         private string currentVersion;
 
-        public VersionInfo versionInfo;
+        public VersionConfig.VersionInfo versionInfo;
 
 
 
@@ -36,28 +37,46 @@ namespace InternetEmpire
             {
                 // 解析 JSON 響應
                 var jsonResponse = www.downloadHandler.text;
-                versionInfo = JsonUtility.FromJson<VersionInfo>(jsonResponse);
+                VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(jsonResponse);
 
-                if (versionInfo.latestVersion != currentVersion)
+                foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
-                    InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
-                    initializeSceneManager.SetVersionChecked(false);
+                    if (info.name == Application.platform.ToString())
+                    {
+                        versionInfo = info;
+                        if (versionInfo.latestVersion != currentVersion)
+                        {
+                            InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
+                            initializeSceneManager.SetVersionChecked(false);
+                        }
+                        else
+                        {
+                            InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
+                            initializeSceneManager.SetVersionChecked(true);
+                        }
+                        break;
+                    }
                 }
-                else
-                {
-                    InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
-                    initializeSceneManager.SetVersionChecked(true);
-                }
+                MessageManager messageManager = GameObject.FindFirstObjectByType<MessageManager>();
+                messageManager.CreateCloseMessage("Current application platform: " + Application.platform, null);
+                Debug.Log("Current application platform: " + Application.platform);
+                Debug.LogError("No version info found for current platform.");
             }
         }
 
         [System.Serializable]
-        public class VersionInfo
+        public class VersionConfig
         {
-            public string latestVersion;
-            public string downloadURL;
+            [System.Serializable]
+            public class VersionInfo
+            {
+                public string name;
+                public string latestVersion;
+                public string downloadURL;
+            }
+            public List<VersionInfo> platforms;
         }
 
-        
+
     }
 }

@@ -1,1 +1,14 @@
-{"platforms":[{"name":"android","latestVersion":"0.1.98","downloadURL":"https://icewaternotice.com/games/Word%20Curse/android/Word%20Curse.apk"},{"name":"window_intel64","latestVersion":"1.0.3","downloadURL":"https://icewaternotice.com/games/Word%20Curse/windows/Word%20Curse.zip"}]}
+{
+    "platforms": [
+        {
+            "name": "Android",
+            "latestVersion": "0.1.98",
+            "downloadURL": "https://icewaternotice.com/games/Word%20Curse/Android/Word%20Curse.apk"
+        },
+        {
+            "name": "WSAPlayerX64",
+            "latestVersion": "1.0.3",
+            "downloadURL": "https://icewaternotice.com/games/Word%20Curse/WSAPlayerX64/Word%20Curse.zip"
+        }
+    ]
+}
