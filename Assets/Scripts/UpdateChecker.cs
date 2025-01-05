@@ -42,9 +42,9 @@ namespace InternetEmpire
 
                 string platform = new string("");
 #if UNITY_ANDROID
-            string platformFilePath = Path.Combine(Application.persistentDataPath, "Bundles/version.json");
+                string platformFilePath = Path.Combine(Application.persistentDataPath, "platform.txt");
 #else
-                string platformFilePath = Path.Combine(Application.streamingAssetsPath, "Bundles/version.json");
+                string platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
 #endif
 
 #if UNITY_ANDROID
@@ -69,9 +69,9 @@ namespace InternetEmpire
 
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
-                    // Debug.Log("info.name: " + info.name);
-                    // Debug.Log("platform: " + PlayerPrefs.GetString("platform"));
-                    // Debug.Log(info.name == PlayerPrefs.GetString("platform"));
+                    Debug.Log("info.name: " + info.name);
+                    Debug.Log("platform: " + platform);
+                    Debug.Log(info.name == platform);
                     if (info.name == platform)
                     {
                         versionInfo = info;
@@ -82,6 +82,7 @@ namespace InternetEmpire
                         }
                         else
                         {
+                            Debug.Log("Version is up to date.");
                             InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
                             initializeSceneManager.SetVersionChecked(true);
                         }
