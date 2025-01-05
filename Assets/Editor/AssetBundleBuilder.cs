@@ -15,8 +15,8 @@ public class AssetBundleBuilder
             BuildTarget.StandaloneWindows
         );
 
-        // UpdateVersionJson();
-        // CommitAndPushToGit();
+        UpdateVersionJson();
+        CommitAndPushToGit();
     }
 
 
