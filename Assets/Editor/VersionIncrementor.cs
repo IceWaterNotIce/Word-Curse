@@ -16,7 +16,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     public void OnPreprocessBuild(BuildReport report)
     {
         UpdateVersion();
-        CommitAndPushToGit(PlayerSettings.bundleVersion);
+        CommitAndPushToGit(BuildProfile.GetActiveBuildProfile().name, PlayerSettings.bundleVersion);
     }
 
     public void OnPostprocessBuild(BuildReport report)
@@ -85,11 +85,11 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         }
     }
 
-    private static void CommitAndPushToGit(string versionParts)
+    private static void CommitAndPushToGit(string platform, string versionParts)
     {
         RunGitCommand("git add .");
         RunGitCommand("git commit -m \"Auto commit from Unity Builder. \"");
-        RunGitCommand("git tag -a v" + versionParts + " -m \"Auto tag from Unity Builder. \"");
+        RunGitCommand("git tag -a p"+ platform +"v" + versionParts + " -m \"Auto tag from Unity Builder. \"");
         RunGitCommand("git push origin main");
         RunGitCommand("git push origin v" + versionParts);
 
