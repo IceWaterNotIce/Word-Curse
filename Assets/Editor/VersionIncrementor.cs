@@ -31,29 +31,30 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         string versionFilePath = Path.Combine(Application.streamingAssetsPath, "version.json");
         if (File.Exists(versionFilePath))
         {
-            string json = File.ReadAllText(versionFilePath);
-            VersionInfo versionInfo = JsonUtility.FromJson<VersionInfo>(json);
-            // versionInfo version + 1
-            string[] versionInfoParts = PlayerSettings.bundleVersion.Split('.');
-            if (versionInfoParts.Length == 3)
-            {
-                if (int.TryParse(versionInfoParts[2], out int patchVersion))
-                {
-                    patchVersion++;
-                    versionInfo.latestVersion = $"{versionInfoParts[0]}.{versionInfoParts[1]}.{patchVersion}";
-                    UnityEngine.Debug.Log($"Version updated to {versionInfo.latestVersion}");
-                }
-                else
-                {
-                    UnityEngine.Debug.LogError("Patch version is not a number.");
-                }
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("Version format is not correct. It should be like 1.0.0");
-            }
+            // string json = File.ReadAllText(versionFilePath);
+            // VersionInfo versionInfo = JsonUtility.FromJson<VersionInfo>(json);
+            // // versionInfo version + 1
+            // string[] versionInfoParts = PlayerSettings.bundleVersion.Split('.');
+            // if (versionInfoParts.Length == 3)
+            // {
+            //     if (int.TryParse(versionInfoParts[2], out int patchVersion))
+            //     {
+            //         patchVersion++;
+            //         versionInfo.latestVersion = $"{versionInfoParts[0]}.{versionInfoParts[1]}.{patchVersion}";
+            //         UnityEngine.Debug.Log($"Version updated to {versionInfo.latestVersion}");
+            //     }
+            //     else
+            //     {
+            //         UnityEngine.Debug.LogError("Patch version is not a number.");
+            //     }
+            // }
+            // else
+            // {
+            //     UnityEngine.Debug.LogError("Version format is not correct. It should be like 1.0.0");
+            // }
 
-            File.WriteAllText(versionFilePath, JsonUtility.ToJson(versionInfo));
+            // File.WriteAllText(versionFilePath, JsonUtility.ToJson(versionInfo));
+            File.WriteAllText(versionFilePath, currentBuildTarget);
         }
 
         string[] versionParts = PlayerSettings.bundleVersion.Split('.');
