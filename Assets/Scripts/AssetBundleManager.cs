@@ -29,8 +29,7 @@ public class AssetBundleManager : MonoBehaviour
         yield return StartCoroutine(CheckAndUpdateBundles());
         // Load the lobby scene
         InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
-        initializeSceneManager.isAssetBundleReady = true;
-        initializeSceneManager.Check();
+        initializeSceneManager.SetAssetBundleReady(true);
     }
 
     IEnumerator CheckAndUpdateBundles()

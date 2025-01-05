@@ -874,8 +874,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isNeedNetwork: 1
+  isNeedVersionCheck: 1
+  isNeedAssetBundleUpdate: 1
   isAssetBundleReady: 0
   isVersionChecked: 0
+--- !u!1 &2084216213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2084216215}
+  - component: {fileID: 2084216214}
+  m_Layer: 0
+  m_Name: MessageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2084216214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084216213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b26168a3f7c6f459c4dbcae1f5dd9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Canvas: {fileID: 1390844511}
+  panelprefab: {fileID: 614776420598179842, guid: 3eef33a6b0d4d6440b4e5311b8bd268e, type: 3}
+  tmpTextPrefab: {fileID: 669441504354781143, guid: ac95701f80de9b54085d0428bcd41fdd, type: 3}
+  buttonPrefab: {fileID: 5103491846348592954, guid: e7d0c692d52fb7b4d8e7b51149d2b5f1, type: 3}
+  buttonClosePrefab: {fileID: 2774368713540040615, guid: dfdce737509ea244a90034548f3df246, type: 3}
+--- !u!4 &2084216215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084216213}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 867.3833, y: 439.20935, z: 292.77292}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -888,3 +939,4 @@ SceneRoots:
   - {fileID: 1275773364}
   - {fileID: 626672902}
   - {fileID: 1999851767}
+  - {fileID: 2084216215}
