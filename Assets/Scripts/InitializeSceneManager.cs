@@ -6,6 +6,7 @@ namespace InternetEmpire
     public class InitializeSceneManager : MonoBehaviour
     {
         public bool isNeedNetwork = false;
+
         public bool isAssetBundleReady = false;
         public bool isVersionChecked = false;
 

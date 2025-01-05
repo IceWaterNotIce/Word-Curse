@@ -16,6 +16,29 @@ namespace InternetEmpire
 
         void Start()
         {
+            if (Canvas == null)
+            {
+                // create a new canvas
+                Canvas = new GameObject("Canvas");
+            }
+            BundleLoader bundleLoader = FindFirstObjectByType<BundleLoader>();
+            bundleLoader = GameObject.Find("BundleLoader").GetComponent<BundleLoader>();
+            bundleLoader.GetPrefabFromBundles<GameObject>("ui", "MsgPanel", (prefab) =>
+            {
+                panelprefab = prefab;
+            });
+            bundleLoader.GetPrefabFromBundles<GameObject>("ui", "MsgTmpTxt", (prefab) =>
+            {
+                tmpTextPrefab = prefab;
+            });
+            bundleLoader.GetPrefabFromBundles<GameObject>("ui", "MsgBtn", (prefab) =>
+            {
+                buttonPrefab = prefab;
+            });
+            bundleLoader.GetPrefabFromBundles<GameObject>("ui", "MsgBtnClose", (prefab) =>
+            {
+                buttonClosePrefab = prefab;
+            });
         }
 
         public void CreateYesNoMessage(string message, System.Action onYes, System.Action onNo)
