@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Windows;
+using System.IO;
 
 
 namespace InternetEmpire
@@ -37,12 +39,40 @@ namespace InternetEmpire
                 // 解析 JSON 響應
                 var jsonResponse = www.downloadHandler.text;
                 VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(jsonResponse);
+
+                string platform = new string("");
+#if UNITY_ANDROID
+            string platformFilePath = Path.Combine(Application.persistentDataPath, "Bundles/version.json");
+#else
+                string platformFilePath = Path.Combine(Application.streamingAssetsPath, "Bundles/version.json");
+#endif
+
+#if UNITY_ANDROID
+            UnityWebRequest localRequest = UnityWebRequest.Get(localVersionPath);
+            yield return localRequest.SendWebRequest();
+            if (localRequest.result == UnityWebRequest.Result.Success)
+            {
+                platform = localRequest.downloadHandler.text;
+            }
+            else
+            {
+                Debug.Log("local version.json not exist.");
+                yield break;
+            }
+#else
+                // Check the local version config file exists
+                if (System.IO.File.Exists(platformFilePath))
+                {
+                    platform = System.IO.File.ReadAllText(platformFilePath);
+                }
+#endif
+
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
-                    Debug.Log("info.name: " + info.name);
-                    Debug.Log("platform: " + PlayerPrefs.GetString("platform"));
-                    Debug.Log(info.name == PlayerPrefs.GetString("platform"));
-                    if (info.name == PlayerPrefs.GetString("platform"))
+                    // Debug.Log("info.name: " + info.name);
+                    // Debug.Log("platform: " + PlayerPrefs.GetString("platform"));
+                    // Debug.Log(info.name == PlayerPrefs.GetString("platform"));
+                    if (info.name == platform)
                     {
                         versionInfo = info;
                         if (versionInfo.latestVersion != currentVersion)

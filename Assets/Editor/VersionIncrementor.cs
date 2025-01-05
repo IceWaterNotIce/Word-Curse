@@ -27,7 +27,10 @@ public class VersionIncrementor : IPreprocessBuildWithReport
 
     private void SetPlatformVar()
     {
-        PlayerPrefs.SetString("platform", BuildProfile.GetActiveBuildProfile().name);
+        // load txt from resources
+        string platform = BuildProfile.GetActiveBuildProfile().name;
+        string platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
+        File.WriteAllText(platformFilePath, platform);
     }
 
     private static void UpdateVersion()

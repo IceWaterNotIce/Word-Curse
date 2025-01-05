@@ -875,7 +875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isNeedNetwork: 1
-  isNeedVersionCheck: 0
+  isNeedVersionCheck: 1
   isNeedAssetBundleUpdate: 1
   isAssetBundleReady: 0
   isVersionChecked: 0
