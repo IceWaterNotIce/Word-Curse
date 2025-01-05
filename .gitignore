@@ -79,3 +79,8 @@ crashlytics-build.properties
 
 #.utmp
 .utmp/
+Assets/UniversalRenderPipelineGlobalSettings.asset
+Assets/Resources/PerformanceTestRunInfo.json
+Assets/Resources/PerformanceTestRunSettings.json
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/ProjectSettings.asset
