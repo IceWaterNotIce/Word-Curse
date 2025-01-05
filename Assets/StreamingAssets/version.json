@@ -1,1 +1,14 @@
-window_intel64
+{
+    "platforms": [
+        {
+            "name": "android",
+            "latestVersion": "0.1.98",
+            "downloadURL": "https://icewaternotice.com/games/Word%20Curse/android/Word%20Curse.apk"
+        },
+        {
+            "name": "window_intel64",
+            "latestversion": "1.0.0",
+            "downloadURL": "https://icewaternotice.com/games/Word%20Curse/windows/Word%20Curse.zip"
+        }
+    ]
+}
