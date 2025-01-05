@@ -70,7 +70,7 @@ public class LobbySceneUIManager : MonoBehaviour
     public async void OnSignInBtnClick()
     {
         AuthManager authManager = FindFirstObjectByType<AuthManager>();
-        await authManager.SignUpWithUsernamePasswordAsync(SignInUsernameInput.text, SignInPasswordInput.text);
+        await authManager.SignInWithUsernamePasswordAsync(SignInUsernameInput.text, SignInPasswordInput.text);
         UpdateUI();
         // if sign in is successful
         if (AuthenticationService.Instance.IsSignedIn)
