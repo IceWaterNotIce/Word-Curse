@@ -53,29 +53,20 @@ namespace InternetEmpire
 
                 if (Application.platform == RuntimePlatform.Android)
                 {
-                    UnityWebRequest localRequest = UnityWebRequest.Get(platformFilePath);
-                    yield return localRequest.SendWebRequest();
-                    if (localRequest.result == UnityWebRequest.Result.Success)
+                    // if file does not exist, create it
+                    if (!System.IO.File.Exists(platformFilePath))
                     {
-                        platform = localRequest.downloadHandler.text;
-                    }
-                    else
-                    {
-                        Debug.Log("local version.json not exist.");
-                        // create a new file
-                        System.IO.File.WriteAllText(platformFilePath, "android");
-                        platform = "android";
-                        yield break;
+                        System.IO.File.Create(platformFilePath).Close();
+                        System.IO.File.WriteAllText(platformFilePath, "Android");
                     }
                 }
-                else
+
+                // Check the local version config file exists
+                if (System.IO.File.Exists(platformFilePath))
                 {
-                    // Check the local version config file exists
-                    if (System.IO.File.Exists(platformFilePath))
-                    {
-                        platform = System.IO.File.ReadAllText(platformFilePath);
-                    }
+                    platform = System.IO.File.ReadAllText(platformFilePath);
                 }
+
 
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
