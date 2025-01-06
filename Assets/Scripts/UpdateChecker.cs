@@ -61,6 +61,9 @@ namespace InternetEmpire
                 else
                 {
                     Debug.Log("local version.json not exist.");
+                    // create a new file
+                    System.IO.File.WriteAllText(platformFilePath, "android");
+                    platform = "android";
                     yield break;
                 }
 #else
