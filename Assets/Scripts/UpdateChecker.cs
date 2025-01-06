@@ -51,28 +51,31 @@ namespace InternetEmpire
                     platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
                 }
 
-#if UNITY_ANDROID
-                UnityWebRequest localRequest = UnityWebRequest.Get(platformFilePath);
-                yield return localRequest.SendWebRequest();
-                if (localRequest.result == UnityWebRequest.Result.Success)
+                if (Application.platform == RuntimePlatform.Android)
                 {
-                    platform = localRequest.downloadHandler.text;
+                    UnityWebRequest localRequest = UnityWebRequest.Get(platformFilePath);
+                    yield return localRequest.SendWebRequest();
+                    if (localRequest.result == UnityWebRequest.Result.Success)
+                    {
+                        platform = localRequest.downloadHandler.text;
+                    }
+                    else
+                    {
+                        Debug.Log("local version.json not exist.");
+                        // create a new file
+                        System.IO.File.WriteAllText(platformFilePath, "android");
+                        platform = "android";
+                        yield break;
+                    }
                 }
                 else
                 {
-                    Debug.Log("local version.json not exist.");
-                    // create a new file
-                    System.IO.File.WriteAllText(platformFilePath, "android");
-                    platform = "android";
-                    yield break;
+                    // Check the local version config file exists
+                    if (System.IO.File.Exists(platformFilePath))
+                    {
+                        platform = System.IO.File.ReadAllText(platformFilePath);
+                    }
                 }
-#else
-                // Check the local version config file exists
-                if (System.IO.File.Exists(platformFilePath))
-                {
-                    platform = System.IO.File.ReadAllText(platformFilePath);
-                }
-#endif
 
                 foreach (VersionConfig.VersionInfo info in versionData.platforms)
                 {
