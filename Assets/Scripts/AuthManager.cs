@@ -26,8 +26,9 @@ public class AuthManager : MonoBehaviour
         
     }
 
-    void OnEnable()
+    async void OnEnable()
     {
+        await SignInAnonymously();
     }
   
     public async Task SignUpWithUsernamePasswordAsync(string username, string password)

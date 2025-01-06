@@ -49,6 +49,9 @@ public class LobbySceneUIManager : MonoBehaviour
         // if user is signed in, show user profile panel
         AuthPanel.SetActive(!AuthenticationService.Instance.IsSignedIn);
         UserProfilePanel.SetActive(AuthenticationService.Instance.IsSignedIn);
+        Debug.Log($"IsSignedIn: {AuthenticationService.Instance.IsSignedIn}");
+        Debug.Log($"AuthPanel: {AuthPanel.activeSelf}");
+        Debug.Log($"UserProfilePanel: {UserProfilePanel.activeSelf}");
     }
 
     public void BtnSignOutOnClick()
