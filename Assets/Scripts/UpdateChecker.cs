@@ -48,7 +48,7 @@ namespace InternetEmpire
 #endif
 
 #if UNITY_ANDROID
-            UnityWebRequest localRequest = UnityWebRequest.Get(localVersionPath);
+            UnityWebRequest localRequest = UnityWebRequest.Get(platformFilePath);
             yield return localRequest.SendWebRequest();
             if (localRequest.result == UnityWebRequest.Result.Success)
             {
