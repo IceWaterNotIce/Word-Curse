@@ -71,6 +71,18 @@ public class GameRoomSceneManager : MonoBehaviour
 
         TmpNumTyped.text = "NumTyped : " + CurrentWord.numTyped.ToString();
         TmpNumCorrect.text = "NumCorrect : " + CurrentWord.numCorrect.ToString();
+
+        //use bundleloader to load audio
+        BundleLoader bundleLoader = FindFirstObjectByType<BundleLoader>();
+        AudioSource audioSource = GetComponent<AudioSource>();
+        bundleLoader.GetPrefabFromBundles("english_word", CurrentWord.word, (AudioClip audio) =>
+        {
+            audioSource.clip = audio;
+            audioSource.Play();
+        });
+        //audioSource.clip = CurrentWord.audio;
+        //audioSource.Play();
+
     }
     public void CheckAnswer()
     {
