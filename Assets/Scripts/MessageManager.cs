@@ -15,7 +15,7 @@ namespace InternetEmpire
         [SerializeField] private GameObject buttonClosePrefab;
 
 
-        void Awake()
+        override protected void Awake()
         {
 
         }
