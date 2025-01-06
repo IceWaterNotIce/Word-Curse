@@ -41,24 +41,28 @@ namespace InternetEmpire
                 VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(jsonResponse);
 
                 string platform = new string("");
-#if UNITY_ANDROID
-                string platformFilePath = Path.Combine(Application.persistentDataPath, "platform.txt");
-#else
-                string platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
-#endif
+                string platformFilePath = new string("");
+                if (Application.platform == RuntimePlatform.Android)
+                {
+                    platformFilePath = Path.Combine(Application.persistentDataPath, "platform.txt");
+                }
+                else
+                {
+                    platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
+                }
 
 #if UNITY_ANDROID
-            UnityWebRequest localRequest = UnityWebRequest.Get(platformFilePath);
-            yield return localRequest.SendWebRequest();
-            if (localRequest.result == UnityWebRequest.Result.Success)
-            {
-                platform = localRequest.downloadHandler.text;
-            }
-            else
-            {
-                Debug.Log("local version.json not exist.");
-                yield break;
-            }
+                UnityWebRequest localRequest = UnityWebRequest.Get(platformFilePath);
+                yield return localRequest.SendWebRequest();
+                if (localRequest.result == UnityWebRequest.Result.Success)
+                {
+                    platform = localRequest.downloadHandler.text;
+                }
+                else
+                {
+                    Debug.Log("local version.json not exist.");
+                    yield break;
+                }
 #else
                 // Check the local version config file exists
                 if (System.IO.File.Exists(platformFilePath))
