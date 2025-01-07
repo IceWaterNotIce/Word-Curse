@@ -1,6 +1,6 @@
 ManifestFileVersion: 0
 UnityVersion: 6000.0.25f1
-CRC: 1024477581
+CRC: 147440431
 HashAppended: 0
 AssetBundleManifest:
   AssetBundleInfos:
@@ -8,8 +8,8 @@ AssetBundleManifest:
       Name: ui
       Dependencies: {}
     Info_1:
-      Name: english_word
+      Name: img.all
       Dependencies: {}
     Info_2:
-      Name: img
+      Name: english_word
       Dependencies: {}
