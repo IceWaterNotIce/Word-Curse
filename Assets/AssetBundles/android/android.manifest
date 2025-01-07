@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.25f1
+CRC: 4197515973
+HashAppended: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: img.all
+      Dependencies: {}
+    Info_1:
+      Name: english_word.all
+      Dependencies: {}
+    Info_2:
+      Name: ui.all
+      Dependencies: {}
