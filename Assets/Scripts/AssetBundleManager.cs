@@ -41,7 +41,7 @@ public class AssetBundleManager : MonoBehaviour
             platform = System.IO.File.ReadAllText(platformFilePath);
         }
 
-        remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles" + platform + "/version.json";
+        remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/" + platform + "/version.json";
 
         if (Application.platform == RuntimePlatform.Android)
         {
