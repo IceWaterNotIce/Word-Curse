@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
+using UnityEditor.Build.Profile;
 
 
 public class AssetBundleBuilder
@@ -11,9 +12,9 @@ public class AssetBundleBuilder
     public static void BuildAllAssetBundles()
     {
         // create directory if not exist
-        if (!Directory.Exists("Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget))
+        if (!Directory.Exists("Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name))
         {
-            Directory.CreateDirectory("Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget);
+            Directory.CreateDirectory("Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
         }
 
         // filter current platform asset bundles
@@ -21,7 +22,7 @@ public class AssetBundleBuilder
         List<string> filted_assetBundles = new List<string>();
         foreach (string assetBundle in assetBundles)
         {
-            if (assetBundle.Contains(".all") || assetBundle.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
+            if (assetBundle.Contains(".all") || assetBundle.Contains(BuildProfile.GetActiveBuildProfile().name))
             {
                 filted_assetBundles.Add(assetBundle);
             }
@@ -36,7 +37,7 @@ public class AssetBundleBuilder
 
         // build asset bundles
         BuildPipeline.BuildAssetBundles(
-            "Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget,
+            "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name,
             buildMap,
             BuildAssetBundleOptions.None,
             EditorUserBuildSettings.activeBuildTarget
@@ -51,7 +52,7 @@ public class AssetBundleBuilder
     private static void UpdateVersionJson()
     {
         // local version.json
-        string versionFilePath = "Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget + "/version.json";
+        string versionFilePath = "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/version.json";
         if (!File.Exists(versionFilePath))
         {
             File.Create(versionFilePath).Close();
@@ -65,7 +66,7 @@ public class AssetBundleBuilder
         List<string> filted_assetBundles = new List<string>();
         foreach (string assetBundle in assetBundles)
         {
-            if (assetBundle.Contains(".all") || assetBundle.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
+            if (assetBundle.Contains(".all") || assetBundle.Contains(BuildProfile.GetActiveBuildProfile().name))
             {
                 filted_assetBundles.Add(assetBundle);
             }
@@ -84,7 +85,7 @@ public class AssetBundleBuilder
                 {
                     name = bundle,
                     version = "1.0",
-                    url = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget + "/" + bundle
+                    url = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
                 });
             }
         }

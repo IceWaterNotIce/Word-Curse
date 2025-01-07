@@ -9,15 +9,45 @@ using InternetEmpire;
 public class AssetBundleManager : MonoBehaviour
 {
     private string localVersionPath;
-    private string remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/StreamingAssets/Bundles/" + Application.platform + "/version.json";
+    private string remoteVersionUrl;
     private string downloadPath;
 
     void Awake()
     {
+        string platform = new string("");
+        string platformFilePath = new string("");
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            platformFilePath = Path.Combine(Application.persistentDataPath, "platform.txt");
+        }
+        else
+        {
+            platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
+        }
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            // if file does not exist, create it
+            if (!System.IO.File.Exists(platformFilePath))
+            {
+                System.IO.File.Create(platformFilePath).Close();
+                System.IO.File.WriteAllText(platformFilePath, "android");
+            }
+        }
+
+        // Check the local version config file exists
+        if (System.IO.File.Exists(platformFilePath))
+        {
+            platform = System.IO.File.ReadAllText(platformFilePath);
+        }
+
+        remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/StreamingAssets/Bundles/" + platform + "/version.json";
+
         if (Application.platform == RuntimePlatform.Android)
         {
             localVersionPath = Path.Combine(Application.persistentDataPath, "Bundles/version.json");
             downloadPath = Path.Combine(Application.persistentDataPath, "Bundles");
+            
         }
         else
         {
@@ -57,7 +87,8 @@ public class AssetBundleManager : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Failed to fetch remote version: " + request.error);
+            Debug.LogError("Failed to fetch remote version: " + request.error +
+            "\n remoteVersionUrl: " + remoteVersionUrl);
             yield break;
         }
 
