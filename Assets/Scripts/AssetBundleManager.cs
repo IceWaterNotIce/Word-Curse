@@ -34,6 +34,7 @@ public class AssetBundleManager : MonoBehaviour
         // Load the lobby scene
         InitializeSceneManager initializeSceneManager = GameObject.FindFirstObjectByType<InitializeSceneManager>();
         initializeSceneManager.SetAssetBundleReady(true);
+        Debug.Log("AssetBundleManager is ready");
     }
 
     IEnumerator CheckAndUpdateBundles()
