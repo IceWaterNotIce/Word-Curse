@@ -51,7 +51,7 @@ public class AssetBundleBuilder
     private static void UpdateVersionJson()
     {
         // local version.json
-        string versionFilePath = Path.Combine("Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget, "/version.json");
+        string versionFilePath = "Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget + "/version.json";
         if (!File.Exists(versionFilePath))
         {
             File.Create(versionFilePath).Close();
