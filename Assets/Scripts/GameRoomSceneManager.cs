@@ -75,7 +75,7 @@ public class GameRoomSceneManager : MonoBehaviour
         //use bundleloader to load audio
         BundleLoader bundleLoader = FindFirstObjectByType<BundleLoader>();
         AudioSource audioSource = GetComponent<AudioSource>();
-        bundleLoader.GetPrefabFromBundles("english_word", CurrentWord.word, (AudioClip audio) =>
+        bundleLoader.GetPrefabFromBundles("english_word.all", CurrentWord.word, (AudioClip audio) =>
         {
             audioSource.clip = audio;
             audioSource.Play();
