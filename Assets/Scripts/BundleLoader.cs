@@ -33,7 +33,10 @@ public class BundleLoader : MonoBehaviour
         {
             bundlePath = Path.Combine(Application.streamingAssetsPath, "Bundles", bundleName);
         }
-        Debug.Log(File.Exists(bundlePath));
+
+        Debug.Log("bundlePath: " + bundlePath);
+        Debug.Log("bundlePath Exists: " + File.Exists(bundlePath));
+
         AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(bundlePath);
         yield return bundleRequest;
 
