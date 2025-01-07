@@ -57,7 +57,7 @@ namespace InternetEmpire
                     if (!System.IO.File.Exists(platformFilePath))
                     {
                         System.IO.File.Create(platformFilePath).Close();
-                        System.IO.File.WriteAllText(platformFilePath, "Android");
+                        System.IO.File.WriteAllText(platformFilePath, "android");
                     }
                 }
 
