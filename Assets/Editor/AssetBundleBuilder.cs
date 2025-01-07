@@ -12,7 +12,7 @@ public class AssetBundleBuilder
         BuildPipeline.BuildAssetBundles(
             "Assets/AssetBundles",
             BuildAssetBundleOptions.None,
-            BuildTarget.StandaloneWindows
+            BuildTarget.StandaloneWindows64
         );
         
         UpdateVersionJson();

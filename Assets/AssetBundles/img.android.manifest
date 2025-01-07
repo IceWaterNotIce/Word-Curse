@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.25f1
+CRC: 58559533
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a20e19176304e2fa8af72abe03b2a71a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9f349c36d7a6532f767333f9299b3e74
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 52d5dbf2aa79107d58d0af149f2486fb
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- "Assets/Resources/\u5716\u72471.png"
+Dependencies: []
