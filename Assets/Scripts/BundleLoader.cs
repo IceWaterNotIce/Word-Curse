@@ -24,7 +24,15 @@ public class BundleLoader : MonoBehaviour
 
     IEnumerator LoadAssetBundles<T>(string bundleName, string assetsName, Action<T> OnSuccess) where T : UnityEngine.Object
     {
-        string bundlePath = Path.Combine(Application.streamingAssetsPath, "Bundles", bundleName);
+        string bundlePath = "";
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            bundlePath = Path.Combine(Application.persistentDataPath, "Bundles", bundleName);
+        }
+        else
+        {
+            bundlePath = Path.Combine(Application.streamingAssetsPath, "Bundles", bundleName);
+        }
         Debug.Log(File.Exists(bundlePath));
         AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(bundlePath);
         yield return bundleRequest;
