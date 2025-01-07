@@ -50,19 +50,66 @@ public class AssetBundleBuilder
 
     private static void UpdateVersionJson()
     {
-        string versionFilePath = Path.Combine(Application.streamingAssetsPath, "Bundles/version.json");
-        if (File.Exists(versionFilePath))
+        // local version.json
+        string versionFilePath = Path.Combine("Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget, "/version.json");
+        if (!File.Exists(versionFilePath))
         {
-            string json = File.ReadAllText(versionFilePath);
-            VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(json);
-            foreach (var bundle in versionData.bundles)
-            {
-                //version format is 1.0
-                bundle.version = (float.Parse(bundle.version) + 0.1f).ToString();
-            }
-            File.WriteAllText(versionFilePath, JsonUtility.ToJson(versionData));
-            UnityEngine.Debug.Log("Version.json updated");
+            File.Create(versionFilePath).Close();
+            File.WriteAllText(versionFilePath, JsonUtility.ToJson(new VersionConfig()));
         }
+        string json = File.ReadAllText(versionFilePath);
+        VersionConfig versionData = JsonUtility.FromJson<VersionConfig>(json) ?? new VersionConfig();
+
+        // filter current platform asset bundles
+        string[] assetBundles = AssetDatabase.GetAllAssetBundleNames();
+        List<string> filted_assetBundles = new List<string>();
+        foreach (string assetBundle in assetBundles)
+        {
+            if (assetBundle.Contains(".all") || assetBundle.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
+            {
+                filted_assetBundles.Add(assetBundle);
+            }
+        }
+
+        // Add new bundle to versionData.bundles
+        if (versionData.bundles == null)
+        {
+            versionData.bundles = new List<VersionConfig.AssetBundleInfo>();
+        }
+        foreach (var bundle in filted_assetBundles)
+        {
+            if (versionData.bundles.Find(b => b.name == bundle) == null)
+            {
+                versionData.bundles.Add(new VersionConfig.AssetBundleInfo
+                {
+                    name = bundle,
+                    version = "1.0",
+                    url = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget + "/" + bundle
+                });
+            }
+        }
+
+        // Remove deleted bundle from versionData.bundles
+        foreach (var bundle in versionData.bundles)
+        {
+            if (filted_assetBundles.Find(b => b == bundle.name) == null)
+            {
+                versionData.bundles.Remove(bundle);
+            }
+        }
+
+        // Update version number
+        foreach (var bundle in versionData.bundles)
+        {
+            //version format is 1.0
+            bundle.version = (float.Parse(bundle.version) + 0.1f).ToString();
+        }
+
+
+
+        File.WriteAllText(versionFilePath, JsonUtility.ToJson(versionData));
+        UnityEngine.Debug.Log("Version.json updated");
+
     }
 
 
@@ -89,4 +136,6 @@ public class AssetBundleBuilder
             UnityEngine.Debug.Log(process.StandardOutput.ReadToEnd());
         }
     }
+
+
 }
