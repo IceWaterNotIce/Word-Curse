@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Diagnostics;
 using System.IO;
+using System.Collections.Generic;
 
 
 public class AssetBundleBuilder
@@ -9,17 +10,39 @@ public class AssetBundleBuilder
     [MenuItem("Assets/Build AssetBundles")]
     public static void BuildAllAssetBundles()
     {
-
-        if (!Directory.Exists("Assets/AssetBundles/"+EditorUserBuildSettings.activeBuildTarget))
+        // create directory if not exist
+        if (!Directory.Exists("Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget))
         {
-            Directory.CreateDirectory("Assets/AssetBundles/"+EditorUserBuildSettings.activeBuildTarget);
+            Directory.CreateDirectory("Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget);
         }
+
+        // filter current platform asset bundles
+        string[] assetBundles = AssetDatabase.GetAllAssetBundleNames();
+        List<string> filted_assetBundles = new List<string>();
+        foreach (string assetBundle in assetBundles)
+        {
+            if (assetBundle.Contains(".all") || assetBundle.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
+            {
+                filted_assetBundles.Add(assetBundle);
+            }
+        }
+        AssetBundleBuild[] buildMap = new AssetBundleBuild[filted_assetBundles.Count];
+
+        for (int i = 0; i < filted_assetBundles.Count; i++)
+        {
+            buildMap[i].assetBundleName = filted_assetBundles[i];
+            buildMap[i].assetNames = AssetDatabase.GetAssetPathsFromAssetBundle(filted_assetBundles[i]);
+        }
+
+        // build asset bundles
         BuildPipeline.BuildAssetBundles(
-            "Assets/AssetBundles/"+EditorUserBuildSettings.activeBuildTarget,
+            "Assets/AssetBundles/" + EditorUserBuildSettings.activeBuildTarget,
+            buildMap,
             BuildAssetBundleOptions.None,
             EditorUserBuildSettings.activeBuildTarget
         );
-        
+
+        // update version.json and push to git
         UpdateVersionJson();
         CommitAndPushToGit();
     }
