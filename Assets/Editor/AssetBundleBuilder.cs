@@ -9,8 +9,13 @@ public class AssetBundleBuilder
     [MenuItem("Assets/Build AssetBundles")]
     public static void BuildAllAssetBundles()
     {
+
+        if (!Directory.Exists("Assets/AssetBundles/"+EditorUserBuildSettings.activeBuildTarget))
+        {
+            Directory.CreateDirectory("Assets/AssetBundles/"+EditorUserBuildSettings.activeBuildTarget);
+        }
         BuildPipeline.BuildAssetBundles(
-            "Assets/AssetBundles",
+            "Assets/AssetBundles/"+EditorUserBuildSettings.activeBuildTarget,
             BuildAssetBundleOptions.None,
             EditorUserBuildSettings.activeBuildTarget
         );
