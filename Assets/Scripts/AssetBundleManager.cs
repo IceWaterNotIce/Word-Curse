@@ -14,13 +14,17 @@ public class AssetBundleManager : MonoBehaviour
 
     void Awake()
     {
-        #if UNITY_ANDROID
+        if (Application.platform == RuntimePlatform.Android)
+        {
             localVersionPath = Path.Combine(Application.persistentDataPath, "Bundles/version.json");
             downloadPath = Path.Combine(Application.persistentDataPath, "Bundles");
-        #else
+        }
+        else
+        {
             localVersionPath = Path.Combine(Application.streamingAssetsPath, "Bundles/version.json");
             downloadPath = Path.Combine(Application.streamingAssetsPath, "Bundles");
-        #endif
+        }
+
     }
 
     // Start is called before the first frame update
@@ -37,34 +41,12 @@ public class AssetBundleManager : MonoBehaviour
         // Load local version
         VersionConfig localConfig = new VersionConfig();
 
-        # if UNITY_EDITOR
-            if (File.Exists(localVersionPath))
-            {
-                string localJson = File.ReadAllText(localVersionPath);
-                localConfig = JsonUtility.FromJson<VersionConfig>(localJson);
-            }
-        #elif UNITY_ANDROID
-            UnityWebRequest localRequest = UnityWebRequest.Get(localVersionPath);
-            yield return localRequest.SendWebRequest();
-            if (localRequest.result == UnityWebRequest.Result.Success)
-            {
-                string localJson = localRequest.downloadHandler.text;
-                localConfig = JsonUtility.FromJson<VersionConfig>(localJson);
-            }
-            else
-            {
-                Debug.Log("local version.json not exist.");
-                yield break;
-            }
-        #else
-            // Check the local version config file exists
-            if (File.Exists(localVersionPath))
-            {
-                string localJson = File.ReadAllText(localVersionPath);
-                localConfig = JsonUtility.FromJson<VersionConfig>(localJson);
-            }
-        #endif
 
+        if (File.Exists(localVersionPath))
+        {
+            string localJson = File.ReadAllText(localVersionPath);
+            localConfig = JsonUtility.FromJson<VersionConfig>(localJson);
+        }
         // Fetch remote version
         UnityWebRequest.ClearCookieCache();
         UnityWebRequest request = UnityWebRequest.Get(remoteVersionUrl);
