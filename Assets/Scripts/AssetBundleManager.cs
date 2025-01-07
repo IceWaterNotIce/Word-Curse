@@ -9,7 +9,7 @@ using InternetEmpire;
 public class AssetBundleManager : MonoBehaviour
 {
     private string localVersionPath;
-    private string remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/StreamingAssets/Bundles/version.json";
+    private string remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/StreamingAssets/Bundles/" + Application.platform + "/version.json";
     private string downloadPath;
 
     void Awake()

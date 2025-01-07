@@ -1,1 +1,19 @@
-{"bundles":[{"name":"english_word.all","version":"1.1","url":"https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/Android/english_word.all"},{"name":"img.all","version":"1.1","url":"https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/Android/img.all"},{"name":"ui.all","version":"1.1","url":"https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/Android/ui.all"}]}
+{
+    "bundles": [
+        {
+            "name": "english_word.all",
+            "version": "1.1",
+            "url": "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/Android/english_word.all"
+        },
+        {
+            "name": "img.all",
+            "version": "1.1",
+            "url": "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/Android/img.all"
+        },
+        {
+            "name": "ui.all",
+            "version": "1.1",
+            "url": "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/AssetBundles/Android/ui.all"
+        }
+    ]
+}
