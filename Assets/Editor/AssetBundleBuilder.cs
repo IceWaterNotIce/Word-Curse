@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using UnityEditor.Build.Profile;
+using PlasticGui.WorkspaceWindow;
 
 
 public class AssetBundleBuilder
@@ -46,6 +47,7 @@ public class AssetBundleBuilder
         // update version.json and push to git
         UpdateVersionJson();
         CommitAndPushToGit();
+        UploadToFTP();
     }
 
 
@@ -116,14 +118,46 @@ public class AssetBundleBuilder
 
     private static void CommitAndPushToGit()
     {
-        RunGitCommand("git add .");
-        RunGitCommand("git commit -m \"Auto commit from Unity Asset Bundle Builder\"");
-        RunGitCommand("git push origin main");
+        RunCommand("git add .");
+        RunCommand("git commit -m \"Auto commit from Unity Asset Bundle Builder\"");
+        RunCommand("git push origin main");
 
-        UnityEngine.Debug.Log("Git commit and push done");
+        UnityEngine.Debug.Log("Asset Bundles pushed to git");
     }
 
-    private static void RunGitCommand(string command)
+    public class FTPaccount
+    {
+        public string host;
+        public string username;
+        public string password;
+    }
+    private static void UploadToFTP()
+    {
+        // get account info from editor/account.json
+        string accountFilePath = "Assets/Editor/account.json";
+        if (!File.Exists(accountFilePath))
+        {
+            UnityEngine.Debug.LogError("account.json not found");
+            return;
+        }
+        string json = File.ReadAllText(accountFilePath);
+        FTPaccount account = JsonUtility.FromJson<FTPaccount>(json) ?? new FTPaccount();
+
+        UnityEngine.Debug.Log("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
+        UnityEngine.Debug.Log("ftp " + account.host + " -u " + account.username + " -p " + account.password);
+        UnityEngine.Debug.Log("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
+        UnityEngine.Debug.Log("mput *");
+        
+        // RunCommand("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
+        // RunCommand("ftp " + account.host + " -u " + account.username + " -p " + account.password + " -s:upload.txt");
+        // RunCommand("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
+        // RunCommand("mput *");
+      
+
+    }
+
+
+    private static void RunCommand(string command)
     {
         ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
         processStartInfo.WorkingDirectory = Application.dataPath;
@@ -137,6 +171,8 @@ public class AssetBundleBuilder
             UnityEngine.Debug.Log(process.StandardOutput.ReadToEnd());
         }
     }
+
+
 
 
 }
