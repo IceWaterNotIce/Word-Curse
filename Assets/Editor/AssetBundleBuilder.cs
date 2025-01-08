@@ -135,7 +135,7 @@ public class AssetBundleBuilder
     private static void UploadToFTP()
     {
         // get account info from editor/account.json
-        string accountFilePath = "Assets/Editor/account.json";
+        string accountFilePath = "Assets/Editor/FTPaccount.json";
         if (!File.Exists(accountFilePath))
         {
             UnityEngine.Debug.LogError("account.json not found");
