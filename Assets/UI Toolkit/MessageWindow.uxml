@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/MessageWindowStyleSheet.uss?fileID=7433441132597879392&amp;guid=7554d12446044e54aa10b6c149c5c079&amp;type=3#MessageWindowStyleSheet" />
+</ui:UXML>

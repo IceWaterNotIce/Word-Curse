@@ -16,17 +16,7 @@ public class LobbySceneManager : MonoBehaviour
 
     }
 
-    public void GoToWordView()
-    {
-        // Load the WordView scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene("WordView");
-    }
 
-    public void GoToGameRoom()
-    {
-        // Load the GameRoom scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene("GameRoom");
-    }
 
 
 }

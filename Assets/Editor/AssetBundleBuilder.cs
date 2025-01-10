@@ -157,6 +157,7 @@ public class AssetBundleBuilder
         RunCommand(account.password);
         RunCommand("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
         RunCommand("mput *");
+        RunCommand("bye");
 
       
 

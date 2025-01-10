@@ -1,0 +1,48 @@
+.message_container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.49);
+}
+
+.message_window {
+    width: 550;
+    height: 250px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-around;
+    border-radius: 10px;
+    border-color: rgb(36, 36, 35);
+    border-width: 10px;
+    background-color: rgb(232, 237, 223);
+}
+
+.horizontal_container {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+.message_label {
+    font-size: 28px;
+    text-align: center;
+}
+
+.message_button {
+    padding: 15px;
+    color: rgb(229, 211, 211);
+    border-radius: 5px;
+    border-color: rgb(36, 36, 35);
+    border-width: 10px;
+    font-size: 20px;
+}
+
+.btn_cancel {
+    background-color: rgb(242, 76, 76);
+}
+
+.btn_confirm {
+    background-color: rgb(41,52,98);
+}

@@ -2,66 +2,137 @@ using UnityEngine;
 using Unity.Services.Authentication;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UIElements;
 public class LobbySceneUIManager : MonoBehaviour
 {
-    public RuntimePlatform ThisCanvasPlatform;
     private RuntimePlatform runtimePlatform;
 
-    [Header("Panels")]
 
-    public GameObject SignInPanel;
+    VisualElement root;
 
-    public GameObject SignUpPanel;
+    Button BtnGoToGraphView;
+    Button BtnGoToGameRoom;
+    Button BtnGoToWordView;
 
-    public GameObject AuthPanel;
-    public GameObject UserProfilePanel;
+    VisualElement AuthPanel;
+    Button SignInWithAnonymouslyBtn;
+    VisualElement SignInPanel;
+    TextField SignInUsernameInput;
+    TextField SignInPasswordInput;
+    Button SignInBtn;
 
-    [Header("UI Elements")]
-    public TMP_Text TmpPlayerId;
-    public TMP_Text TmpUsername;
-    public TMP_Text TmpLastPasswordUpdate;
-    public TMP_InputField SignInUsernameInput;
-    public TMP_InputField SignInPasswordInput;
+    VisualElement SignUpPanel;
+    TextField SignUpUsernameInput;
+    TextField SignUpPasswordInput;
+    Button SignUpBtn;
+    VisualElement UserProfilePanel;
 
-    public TMP_InputField SignUpUsernameInput;
-    public TMP_InputField SignUpPasswordInput;
+    Label UIDLabel;
+    Label UsernameLabel;
+    Label LastPasswordChangeLabel;
+    Button SignOutBtn;
+    Button AuthBtn;
+
+    Button BtnGoToSignIn;
+    Button BtnGoToSignUp;
+
+
     void Start()
     {
         // show the canvas only on the right platform or in the editor
         runtimePlatform = Application.platform;
-        gameObject.SetActive(runtimePlatform == ThisCanvasPlatform || runtimePlatform == RuntimePlatform.WindowsEditor);
+
     }
 
     void OnEnable()
     {
+        UIDocument uiDoc = GetComponent<UIDocument>();
+        root = uiDoc.rootVisualElement;
+
+        BtnGoToGraphView = root.Q<Button>("BtnGoToGraphView");
+        BtnGoToGraphView.clicked += GoToGraphView;
+        BtnGoToGameRoom = root.Q<Button>("BtnGoToGameRoom");
+        BtnGoToGameRoom.clicked += GoToGameRoom;
+        BtnGoToWordView = root.Q<Button>("BtnGoToWordView");
+        BtnGoToWordView.clicked += GoToWordView;
+
+        AuthBtn = root.Q<Button>("BtnAuth");
+        AuthBtn.clicked += BtnAuthOnClick;
+
+        AuthPanel = root.Q<VisualElement>("AuthPanel");
+        Button BtnCloseAuthPanel = AuthPanel.Query<Button>(className: "button_close");
+        BtnCloseAuthPanel.clicked += () => SwitchActiveState(AuthPanel);
+        SignInPanel = root.Q<VisualElement>("SignInPanel");
+        Button BtnCloseSignInPanel = SignInPanel.Query<Button>(className: "button_close");
+        BtnCloseSignInPanel.clicked += () => SwitchActiveState(SignInPanel);
+        SignUpPanel = root.Q<VisualElement>("SignUpPanel");
+        Button BtnCloseSignUpPanel = SignUpPanel.Query<Button>(className: "button_close");
+        BtnCloseSignUpPanel.clicked += () => SwitchActiveState(SignUpPanel);
+        UserProfilePanel = root.Q<VisualElement>("UserProfilePanel");
+        Button BtnCloseUserProfilePanel = UserProfilePanel.Query<Button>(className: "button_close");
+        BtnCloseUserProfilePanel.clicked += () => SwitchActiveState(UserProfilePanel);
+
+        
+        SignInWithAnonymouslyBtn = root.Q<Button>("BtnSignInWithAnonymously");
+        SignInWithAnonymouslyBtn.clicked += OnSignInAnonymouslyBtnClick;
+        BtnGoToSignIn = root.Q<Button>("BtnGoToSignIn");
+        BtnGoToSignIn.clicked += () => {
+            SwitchActiveState(SignInPanel);
+            SwitchActiveState(AuthPanel);
+        };
+        BtnGoToSignUp = root.Q<Button>("BtnGoToSignUp");
+        BtnGoToSignUp.clicked += () => {
+            SwitchActiveState(SignUpPanel);
+            SwitchActiveState(AuthPanel);
+        };
+
+
+        SignInUsernameInput = root.Q<TextField>("SignInUsernameInput");
+        SignInPasswordInput = root.Q<TextField>("SignInPasswordInput");
+        SignInBtn = root.Q<Button>("BtnSignIn");
+        SignInBtn.clicked += OnSignInBtnClick;
+
+        SignUpUsernameInput = root.Q<TextField>("SignUpUsernameInput");
+        SignUpPasswordInput = root.Q<TextField>("SignUpPasswordInput");
+        SignUpBtn = root.Q<Button>("BtnSignUp");
+        SignUpBtn.clicked += OnSignUpBtnClick;
+
+        SignOutBtn = root.Q<Button>("BtnSignOut");
+        SignOutBtn.clicked += BtnSignOutOnClick;
+
+        UIDLabel = root.Q<Label>("UIDLabel");
+        UsernameLabel = root.Q<Label>("UsernameLabel");
+        LastPasswordChangeLabel = root.Q<Label>("LastPasswordChangeLabel");
+
+
 
     }
+    
 
-    public void SwitchActiveState(GameObject obj)
+    
+
+    public void SwitchActiveState(VisualElement obj)
     {
         // Close the panel
-        obj.SetActive(!obj.activeSelf);
+        obj.style.display = obj.style.display == DisplayStyle.None ? DisplayStyle.Flex : DisplayStyle.None;
     }
+
 
     public void BtnAuthOnClick()
     {
-        // if user is not signed in, show sign in panel
-        // if user is signed in, show user profile panel
-        AuthPanel.SetActive(!AuthenticationService.Instance.IsSignedIn);
-        UserProfilePanel.SetActive(AuthenticationService.Instance.IsSignedIn);
-        Debug.Log($"IsSignedIn: {AuthenticationService.Instance.IsSignedIn}");
-        Debug.Log($"AuthPanel: {AuthPanel.activeSelf}");
-        Debug.Log($"UserProfilePanel: {UserProfilePanel.activeSelf}");
+        UserProfilePanel.style.display = AuthenticationService.Instance.IsSignedIn == true ? DisplayStyle.Flex : DisplayStyle.None;
+        AuthPanel.style.display = AuthenticationService.Instance.IsSignedIn == false ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     public void BtnSignOutOnClick()
     {
         // sign out the user
         AuthenticationService.Instance.SignOut();
-        // show sign in panel
-        AuthPanel.SetActive(true);
-        // hide user profile panel
-        UserProfilePanel.SetActive(false);
+        VisualElement userprofilePanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("UserProfilePanel");
+        VisualElement authPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("AuthPanel");
+        //set attributes enabled
+        userprofilePanel.SetEnabled(false);
+        authPanel.SetEnabled(true);
     }
 
     public void GoToGraphView()
@@ -69,7 +140,17 @@ public class LobbySceneUIManager : MonoBehaviour
         // Load the GraphView scene
         UnityEngine.SceneManagement.SceneManager.LoadScene("GraphView");
     }
+    public void GoToWordView()
+    {
+        // Load the WordView scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene("WordView");
+    }
 
+    public void GoToGameRoom()
+    {
+        // Load the GameRoom scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GameRoom");
+    }
     public async void OnSignInBtnClick()
     {
         AuthManager authManager = FindFirstObjectByType<AuthManager>();
@@ -78,7 +159,9 @@ public class LobbySceneUIManager : MonoBehaviour
         // if sign in is successful
         if (AuthenticationService.Instance.IsSignedIn)
         {
-            SignInPanel.SetActive(false);
+            //set attributes enabled
+            SignInPanel.style.display = DisplayStyle.None;
+            UserProfilePanel.style.display = DisplayStyle.Flex;
         }
     }
 
@@ -87,10 +170,12 @@ public class LobbySceneUIManager : MonoBehaviour
         AuthManager authManager = FindFirstObjectByType<AuthManager>();
         await authManager.SignUpWithUsernamePasswordAsync(SignUpUsernameInput.text, SignUpPasswordInput.text);
         UpdateUI();
-        // if sign up is successful 
+        // if sign up is successful
         if (AuthenticationService.Instance.IsSignedIn)
         {
-            SignUpPanel.SetActive(false);
+            //set attributes enabled
+            SignUpPanel.style.display = DisplayStyle.None;
+            UserProfilePanel.style.display = DisplayStyle.Flex;
         }
     }
 
@@ -102,24 +187,26 @@ public class LobbySceneUIManager : MonoBehaviour
         // if sign in anonymously is successful
         if (AuthenticationService.Instance.IsSignedIn)
         {
-            AuthPanel.SetActive(false);
+            //set attributes enabled
+            SignInPanel.style.display = DisplayStyle.None;
+            UserProfilePanel.style.display = DisplayStyle.Flex;
         }
-        
+
     }
     async void UpdateUI()
     {
-        if (!AuthenticationService.Instance.IsSignedIn)
+        if (AuthenticationService.Instance.IsSignedIn)
         {
-            TmpPlayerId.text = "Not signed in";
-            TmpUsername.text = "Not signed in";
-            TmpLastPasswordUpdate.text = "Not signed in";
-            return;
+            var playerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
+            UIDLabel.text = playerInfo.Id;
+            UsernameLabel.text = playerInfo.Username;
+            LastPasswordChangeLabel.text = playerInfo.LastPasswordUpdate.ToString();
         }
-
-        PlayerInfo playerInfo = await AuthenticationService.Instance.GetPlayerInfoAsync();
-
-        TmpPlayerId.text = playerInfo.Id ?? "Player ID not found";
-        TmpUsername.text = playerInfo.Username ?? "Username not found";
-        TmpLastPasswordUpdate.text = playerInfo.LastPasswordUpdate != null ? playerInfo.LastPasswordUpdate.Value.ToString() : "Password not updated";
+        else
+        {
+            UIDLabel.text = "N/A";
+            UsernameLabel.text = "N/A";
+            LastPasswordChangeLabel.text = "N/A";
+        }
     }
 }
