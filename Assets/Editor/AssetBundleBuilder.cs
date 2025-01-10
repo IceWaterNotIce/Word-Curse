@@ -47,6 +47,7 @@ public class AssetBundleBuilder
         // update version.json and push to git
         UpdateVersionJson();
         CommitAndPushToGit();
+        UploadToFTP();
         //
     }
 
