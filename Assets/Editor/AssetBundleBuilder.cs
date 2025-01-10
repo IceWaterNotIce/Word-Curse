@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using UnityEditor.Build.Profile;
 using PlasticGui.WorkspaceWindow;
 
-
 public class AssetBundleBuilder
 {
     [MenuItem("Assets/Build AssetBundles")]
