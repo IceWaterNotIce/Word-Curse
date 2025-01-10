@@ -47,11 +47,19 @@ public class AssetBundleBuilder
         // update version.json and push to git
         UpdateVersionJson();
         CommitAndPushToGit();
-        UploadToFTP();
         //
     }
 
+    private static void OnAssetBundlesBuilt(string outputPath)
+    {
+        UnityEngine.Debug.Log("Asset Bundles built successfully at: " + outputPath);
 
+        // Add your additional logic here
+        // For example, you could:
+        // - Move files
+        // - Update an index
+        // - Notify other systems
+    }
     private static void UpdateVersionJson()
     {
         // local version.json
@@ -150,7 +158,7 @@ public class AssetBundleBuilder
         UnityEngine.Debug.Log(account.password);
         UnityEngine.Debug.Log("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
         UnityEngine.Debug.Log("mput *");
-        
+
         RunCommand("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
         RunCommand("ftp -i " + account.host);
         RunCommand(account.username);
@@ -159,7 +167,7 @@ public class AssetBundleBuilder
         RunCommand("mput *");
         RunCommand("bye");
 
-      
+
 
     }
 
