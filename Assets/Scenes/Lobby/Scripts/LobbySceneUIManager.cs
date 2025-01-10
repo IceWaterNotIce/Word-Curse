@@ -188,7 +188,7 @@ public class LobbySceneUIManager : MonoBehaviour
         if (AuthenticationService.Instance.IsSignedIn)
         {
             //set attributes enabled
-            SignInPanel.style.display = DisplayStyle.None;
+            AuthPanel.style.display = DisplayStyle.None;
             UserProfilePanel.style.display = DisplayStyle.Flex;
         }
 
