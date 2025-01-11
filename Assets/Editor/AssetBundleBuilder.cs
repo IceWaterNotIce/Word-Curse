@@ -173,6 +173,8 @@ public class AssetBundleBuilder
             UploadFile(fullFtpUrl, account.username, account.password, localFilePath);
         }
 
+        UnityEngine.Debug.Log("Asset Bundles uploaded to FTP");
+
 
     }
     static void UploadFile(string ftpUrl, string username, string password, string localFilePath)

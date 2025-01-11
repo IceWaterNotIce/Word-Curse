@@ -22,7 +22,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
 
     public void OnPostprocessBuild(BuildReport report)
     {
-
+        UnityEngine.Debug.Log("Build completed");
     }
 
     private void SetPlatformVar()
