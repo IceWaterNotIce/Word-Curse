@@ -155,11 +155,11 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         try
         {
             UploadDirectory(localFolderPath, ftpUrl, account.username, account.password);
-            Console.WriteLine("Upload complete.");
+            UnityEngine.Debug.Log("Upload complete.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            UnityEngine.Debug.Log($"Error: {ex.Message}");
         }
 
 
@@ -167,8 +167,8 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     }
     static void UploadDirectory(string localFolderPath, string ftpUrl, string username, string password)
     {
-        Console.WriteLine($"Uploading directory: {localFolderPath}");
-        Console.WriteLine($"To FTP server: {ftpUrl}");
+        UnityEngine.Debug.Log($"Uploading directory: {localFolderPath}");
+        UnityEngine.Debug.Log($"To FTP server: {ftpUrl}");
 
         // Upload all files in the directory
         foreach (string filePath in Directory.GetFiles(localFolderPath))
@@ -194,8 +194,8 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         string fileName = Path.GetFileName(filePath);
         string uploadUrl = $"{ftpUrl}{fileName}";
 
-        Console.WriteLine($"Uploading file: {filePath}");
-        Console.WriteLine($"To FTP server: {uploadUrl}");
+        UnityEngine.Debug.Log($"Uploading file: {filePath}");
+        UnityEngine.Debug.Log($"To FTP server: {uploadUrl}");
 
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uploadUrl);
         request.Method = WebRequestMethods.Ftp.UploadFile;
@@ -207,7 +207,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             fileStream.CopyTo(requestStream);
         }
 
-        Console.WriteLine($"Uploaded: {fileName}");
+        UnityEngine.Debug.Log($"Uploaded: {fileName}");
     }
 
     static void CreateFtpDirectory(string ftpUrl, string username, string password)
@@ -220,7 +220,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         {
             using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
             {
-                Console.WriteLine($"Directory created: {ftpUrl}");
+                UnityEngine.Debug.Log($"Directory created: {ftpUrl}");
             }
         }
         catch (WebException ex)
@@ -228,7 +228,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             // Handle the case where the directory already exists
             if (ex.Response is FtpWebResponse ftpResponse && ftpResponse.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
             {
-                Console.WriteLine($"Directory already exists: {ftpUrl}");
+                UnityEngine.Debug.Log($"Directory already exists: {ftpUrl}");
             }
             else
             {
