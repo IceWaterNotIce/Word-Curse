@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net;
 
 
+
 [InitializeOnLoad]
 public class VersionIncrementor : IPreprocessBuildWithReport
 {
@@ -21,7 +22,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         CommitAndPushToGit(BuildProfile.GetActiveBuildProfile().name, PlayerSettings.bundleVersion);
     }
 
-    public void OnPostprocessBuild(BuildReport report)
+    public static void OnPostprocessBuild(BuildReport report)
     {
         UnityEngine.Debug.Log("Build completed");
         UploadToFTP();
