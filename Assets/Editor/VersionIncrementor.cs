@@ -102,7 +102,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     {
         RunGitCommand("git add .");
         RunGitCommand("git commit -m \"Auto commit from Unity Builder. \"");
-        RunGitCommand("git tag -a "+ platform +"v" + versionParts + " -m \"Auto tag from Unity Builder. \"");
+        RunGitCommand("git tag -a " + platform + "v" + versionParts + " -m \"Auto tag from Unity Builder. \"");
         RunGitCommand("git push origin main");
         RunGitCommand("git push origin v" + versionParts);
 
@@ -124,7 +124,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         }
     }
 
-public class FTPaccount
+    public class FTPaccount
     {
         public string host;
         public string username;
@@ -132,40 +132,55 @@ public class FTPaccount
     }
     private static void UploadToFTP()
     {
-        // get account info from editor/account.json
+        // 從 editor/account.json 獲取帳戶信息
         string accountFilePath = "Assets/Editor/FTPaccount.json";
         if (!File.Exists(accountFilePath))
         {
-            UnityEngine.Debug.LogError("account.json not found");
+            UnityEngine.Debug.LogError("account.json 未找到");
             return;
         }
+
         string json = File.ReadAllText(accountFilePath);
         FTPaccount account = JsonUtility.FromJson<FTPaccount>(json) ?? new FTPaccount();
         string localFolderPath = "Builds/" + BuildProfile.GetActiveBuildProfile().name + "/";
         string ftpUrl = account.host + BuildProfile.GetActiveBuildProfile().name + "/";
+
         if (!Directory.Exists(localFolderPath))
         {
-            UnityEngine.Debug.Log("Local folder does not exist.");
+            UnityEngine.Debug.Log("本地文件夾不存在。");
             return;
         }
 
-        // 获取文件夹中的所有文件
-        string[] files = Directory.GetFiles(localFolderPath);
+        // 開始遞歸上傳文件和文件夾
+        UploadFilesRecursively(localFolderPath, ftpUrl, account);
 
+        UnityEngine.Debug.Log("資源包已上傳到 FTP");
+    }
+
+    private static void UploadFilesRecursively(string localFolderPath, string ftpUrl, FTPaccount account)
+    {
+        // 上傳當前文件夾中的文件
+        string[] files = Directory.GetFiles(localFolderPath);
         foreach (string localFilePath in files)
         {
-            // 获取文件名
             string fileName = Path.GetFileName(localFilePath);
-            // 创建完整的 FTP URL
             string fullFtpUrl = $"{ftpUrl}{fileName}";
 
-            // 上传文件
+            // 上傳文件
             UploadFile(fullFtpUrl, account.username, account.password, localFilePath);
         }
 
-        UnityEngine.Debug.Log("Asset Bundles uploaded to FTP");
+        // 遞歸上傳子文件夾中的文件
+        string[] directories = Directory.GetDirectories(localFolderPath);
+        foreach (string directory in directories)
+        {
+            // 獲取子文件夾名稱並創建對應的 FTP 文件夾 URL
+            string directoryName = Path.GetFileName(directory);
+            string newFtpUrl = $"{ftpUrl}{directoryName}/";
 
-
+            // 遞歸上傳子文件夾中的文件
+            UploadFilesRecursively(directory, newFtpUrl, account);
+        }
     }
     static void UploadFile(string ftpUrl, string username, string password, string localFilePath)
     {
