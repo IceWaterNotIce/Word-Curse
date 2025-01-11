@@ -116,13 +116,11 @@ public class AssetBundleBuilder
         {
             //version format is 1.0
             bundle.version = (float.Parse(bundle.version) + 0.1f).ToString();
+            UnityEngine.Debug.Log(bundle.name + " version updated to " + bundle.version);
         }
-
-
 
         File.WriteAllText(versionFilePath, JsonUtility.ToJson(versionData));
         UnityEngine.Debug.Log("Version.json updated");
-
     }
 
 
@@ -134,23 +132,12 @@ public class AssetBundleBuilder
 
         UnityEngine.Debug.Log("Asset Bundles pushed to git");
     }
-
-    public class FTPaccount
-    {
-        public string host;
-        public string username;
-        public string password;
-    }
     private static void UploadToFTP()
     {
-        
         string localFolderPath = "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
-        string ftpUrl = "AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
-        FTP_Controller.UploadDirectory(localFolderPath, ftpUrl);
-
+        string remoteFolderPath = "AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
+        FTP_Controller.UploadDirectory(localFolderPath, remoteFolderPath);
         UnityEngine.Debug.Log("Asset Bundles uploaded to FTP");
-
-
     }
 
     private static void RunCommand(string command)
