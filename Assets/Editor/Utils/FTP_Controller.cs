@@ -73,7 +73,7 @@ namespace FTP_Manager
                 fileStream.CopyTo(requestStream);
             }
 
-            Debug.Log($"Uploaded: {fileName}");
+            Debug.Log($"Uploaded file: {fileName}");
         }
 
         public static void CreateFtpDirectory(string ftpUrl, string username, string password)
