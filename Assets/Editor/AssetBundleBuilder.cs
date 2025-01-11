@@ -96,7 +96,7 @@ public class AssetBundleBuilder
                 {
                     name = bundle,
                     version = "1.0",
-                    url = "https://raw.githubusercontent.com/IceWaterNotIce/Word-Curse/main/Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
+                    url = "https://icewaternotice.com/games/Word%20Curse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
                 });
             }
         }
