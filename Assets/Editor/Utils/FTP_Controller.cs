@@ -35,13 +35,15 @@ namespace FTP_Manager
                 host = account.host;
             }
 
-            Debug.Log($"Uploading Folder: {Path.GetFileName(localFolderPath)}\n {localFolderPath}\n To FTP server:\n {host}{RemoteFolderPath}");
+            Debug.Log($"Uploading Folder : {Path.GetFileName(localFolderPath)}\n {localFolderPath}\n To FTP server:\n {host}{RemoteFolderPath}");
 
             // Upload all files in the directory
             foreach (string filePath in Directory.GetFiles(localFolderPath))
             {
                 UploadFile(filePath, $"{host}{RemoteFolderPath}" , username, password);
             }
+
+            Debug.Log($"Uploaded  Folder : {Path.GetFileName(localFolderPath)}");
 
             // Recurse into subdirectories
             foreach (string directoryPath in Directory.GetDirectories(localFolderPath))
@@ -73,7 +75,7 @@ namespace FTP_Manager
                 fileStream.CopyTo(requestStream);
             }
 
-            Debug.Log($"Uploaded file  : {fileName}");
+            Debug.Log($"Uploaded  file : {fileName}");
         }
 
         public static void CreateFtpDirectory(string ftpUrl, string username, string password)
