@@ -175,7 +175,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         foreach (string directory in directories)
         {
             // 獲取子文件夾名稱並創建對應的 FTP 文件夾 URL
-            string directoryName = Path.GetFileName(directory).Replace("\\", "/");
+            string directoryName = Path.GetFileName(directory).Replace("\\", "/").Replace("ftp:/", "ftp://");
             string newFtpUrl = $"{ftpUrl}{directoryName}/";
 
             // 遞歸上傳子文件夾中的文件
@@ -190,7 +190,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             UnityEngine.Debug.Log($"File does not exist: {localFilePath}");
             return;
         }
-        string ftpDirectory = Path.GetDirectoryName(ftpUrl).Replace("\\", "/") + "/";
+        string ftpDirectory = Path.GetDirectoryName(ftpUrl).Replace("\\", "/").Replace("ftp:/", "ftp://") + "/";
         UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
         CreateFtpDirectory(ftpDirectory, username, password);
 
