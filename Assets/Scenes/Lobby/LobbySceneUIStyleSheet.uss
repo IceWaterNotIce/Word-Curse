@@ -11,6 +11,7 @@
 .panel {
     width: 550px;
     height: 250px;
+    max-width: 80%;
     max-height: 250px;
     flex-direction: column;
     align-items: stretch;
