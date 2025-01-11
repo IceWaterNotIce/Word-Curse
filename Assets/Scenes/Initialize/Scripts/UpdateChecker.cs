@@ -19,7 +19,7 @@ namespace InternetEmpire
         void Start()
         {
             currentVersion = Application.version;
-            versionCheckURL = "https://raw.githubusercontent.com/IceWaterNotIce/WordCurse/main/Assets/StreamingAssets/version.json";
+            versionCheckURL = "https://raw.githubusercontent.com/IceWaterNotIce/Word-Curse/main/Assets/StreamingAssets/version.json";
             StartCoroutine(CheckForUpdate());
         }
 
