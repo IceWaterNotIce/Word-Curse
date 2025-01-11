@@ -152,7 +152,7 @@ public class AssetBundleBuilder
         string json = File.ReadAllText(accountFilePath);
         FTPaccount account = JsonUtility.FromJson<FTPaccount>(json) ?? new FTPaccount();
         string localFolderPath = "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
-        string ftpUrl = account.host + BuildProfile.GetActiveBuildProfile().name + "/";
+        string ftpUrl = account.host + "AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
         if (!Directory.Exists(localFolderPath))
         {
             UnityEngine.Debug.Log("Local folder does not exist.");
