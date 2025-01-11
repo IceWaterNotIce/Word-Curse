@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEditor.Build.Profile;
 using PlasticGui.WorkspaceWindow;
 using System.Net;
+using FTP_Manager;
 public class AssetBundleBuilder
 {
     [MenuItem("Assets/Build AssetBundles")]
@@ -170,39 +171,13 @@ public class AssetBundleBuilder
             string fullFtpUrl = $"{ftpUrl}{fileName}";
 
             // 上传文件
-            UploadFile(fullFtpUrl, account.username, account.password, localFilePath);
+            FTP_Controller.UploadFile(localFilePath, fullFtpUrl, account.username, account.password);
         }
 
         UnityEngine.Debug.Log("Asset Bundles uploaded to FTP");
 
 
     }
-    static void UploadFile(string ftpUrl, string username, string password, string localFilePath)
-    {
-        FileInfo fileInfo = new FileInfo(localFilePath);
-        if (!fileInfo.Exists)
-        {
-            UnityEngine.Debug.Log($"File does not exist: {localFilePath}");
-            return;
-        }
-
-        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
-        request.Method = WebRequestMethods.Ftp.UploadFile;
-        request.Credentials = new NetworkCredential(username, password);
-        request.ContentLength = fileInfo.Length;
-
-        using (FileStream fs = fileInfo.OpenRead())
-        using (Stream requestStream = request.GetRequestStream())
-        {
-            fs.CopyTo(requestStream);
-        }
-
-        using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
-        {
-            UnityEngine.Debug.Log($"Uploaded {fileInfo.Name}, status {response.StatusDescription}");
-        }
-    }
-
 
     private static void RunCommand(string command)
     {

@@ -1,16 +1,16 @@
 ManifestFileVersion: 0
 UnityVersion: 6000.0.25f1
-CRC: 948855938
+CRC: 1395179573
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 72ce0cfcc49b53a75dcc567afc73001b
+    Hash: 4612e22a559b13d4b64cbd37c76b219f
   TypeTreeHash:
     serializedVersion: 2
     Hash: 9a2ca7bdbd1871f7131daf57de908e0c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 8bf7e67bf2c3642b2f41f3a24d308aae
+    Hash: 7ed65628816384c2a9c03751faae684c
 HashAppended: 0
 ClassTypes:
 - Class: 83
@@ -18,6 +18,7 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Resources/Audios/EnglishWords/contemplate.mp3
+- Assets/Resources/Audios/EnglishWords/scrub.mp3
 - Assets/Resources/Audios/EnglishWords/colon.mp3
 - Assets/Resources/Audios/EnglishWords/purpose.mp3
 - Assets/Resources/Audios/EnglishWords/organization.mp3
