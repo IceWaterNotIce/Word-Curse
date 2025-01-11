@@ -177,7 +177,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             // 獲取子文件夾名稱並創建對應的 FTP 文件夾 URL
             string directoryName = Path.GetFileName(directory).Replace("\\", "/").Replace("ftp:/", "ftp://");
             string newFtpUrl = $"{ftpUrl}{directoryName}/";
-            string ftpDirectory = Path.GetDirectoryName(directoryName).Replace("\\", "/").Replace("ftp:/", "ftp://") + "/";
+            string ftpDirectory = Path.GetDirectoryName(newFtpUrl).Replace("\\", "/").Replace("ftp:/", "ftp://") + "/";
             UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
             CreateFtpDirectory(ftpDirectory, account.username, account.password);
             // 遞歸上傳子文件夾中的文件
