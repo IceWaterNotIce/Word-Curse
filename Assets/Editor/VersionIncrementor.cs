@@ -25,7 +25,6 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     {
         UnityEngine.Debug.Log("Build completed");
         UploadToFTP();
-
     }
 
     private void SetPlatformVar()
