@@ -21,9 +21,9 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         UpdateVersion();
         CommitAndPushToGit(BuildProfile.GetActiveBuildProfile().name, PlayerSettings.bundleVersion);
     }
-    
+
     [PostProcessBuild]
-    public static void OnPostprocessBuild(BuildReport report)
+    public static void OnPostprocessBuild(BuildTarget target, string path)
     {
         UnityEngine.Debug.Log("Build completed");
         UploadToFTP();
