@@ -8,7 +8,7 @@ using System;
 using UnityEditor.Build.Profile;
 using System.Collections.Generic;
 using System.Net;
-
+using UnityEditor.Callbacks;
 
 
 [InitializeOnLoad]
@@ -21,7 +21,8 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         UpdateVersion();
         CommitAndPushToGit(BuildProfile.GetActiveBuildProfile().name, PlayerSettings.bundleVersion);
     }
-
+    
+    [PostProcessBuild]
     public static void OnPostprocessBuild(BuildReport report)
     {
         UnityEngine.Debug.Log("Build completed");
