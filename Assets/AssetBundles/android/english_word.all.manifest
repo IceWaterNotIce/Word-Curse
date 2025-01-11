@@ -1,16 +1,16 @@
 ManifestFileVersion: 0
 UnityVersion: 6000.0.25f1
-CRC: 3761189180
+CRC: 948855938
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f239b70f2c51a9856bbeb94823ee1e78
+    Hash: 72ce0cfcc49b53a75dcc567afc73001b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 9a2ca7bdbd1871f7131daf57de908e0c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 0107833cf68959ab7db55457672fd28d
+    Hash: 8bf7e67bf2c3642b2f41f3a24d308aae
 HashAppended: 0
 ClassTypes:
 - Class: 83
@@ -19,6 +19,8 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Resources/Audios/EnglishWords/contemplate.mp3
 - Assets/Resources/Audios/EnglishWords/colon.mp3
+- Assets/Resources/Audios/EnglishWords/purpose.mp3
+- Assets/Resources/Audios/EnglishWords/organization.mp3
 - Assets/Resources/Audios/EnglishWords/commercial.mp3
 - Assets/Resources/Audios/EnglishWords/interested.mp3
 - Assets/Resources/Audios/EnglishWords/honour.mp3
@@ -33,11 +35,13 @@ Assets:
 - Assets/Resources/Audios/EnglishWords/competitor.mp3
 - Assets/Resources/Audios/EnglishWords/coefficient.mp3
 - Assets/Resources/Audios/EnglishWords/combination.mp3
+- Assets/Resources/Audios/EnglishWords/specially.mp3
 - Assets/Resources/Audios/EnglishWords/especially.mp3
 - Assets/Resources/Audios/EnglishWords/condition.mp3
+- Assets/Resources/Audios/EnglishWords/bath.mp3
 - Assets/Resources/Audios/EnglishWords/corporate.mp3
 - Assets/Resources/Audios/EnglishWords/competitive.mp3
 - Assets/Resources/Audios/EnglishWords/client.mp3
-- Assets/Resources/Audios/EnglishWords/competitive 1.mp3
+- Assets/Resources/Audios/EnglishWords/bubble.mp3
 - Assets/Resources/Audios/EnglishWords/compressor.mp3
 Dependencies: []
