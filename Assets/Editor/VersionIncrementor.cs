@@ -159,6 +159,10 @@ public class VersionIncrementor : IPreprocessBuildWithReport
 
     private static void UploadFilesRecursively(string localFolderPath, string ftpUrl, FTPaccount account)
     {
+        string ftpDirectory = Path.GetDirectoryName(ftpUrl).Replace("\\", "/").Replace("ftp:/", "ftp://") + "/";
+        UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
+        CreateFtpDirectory(ftpDirectory, account.username, account.password);
+
         // 上傳當前文件夾中的文件
         string[] files = Directory.GetFiles(localFolderPath);
         foreach (string localFilePath in files)
@@ -177,9 +181,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             // 獲取子文件夾名稱並創建對應的 FTP 文件夾 URL
             string directoryName = Path.GetFileName(directory).Replace("\\", "/").Replace("ftp:/", "ftp://");
             string newFtpUrl = $"{ftpUrl}{directoryName}/";
-            string ftpDirectory = Path.GetDirectoryName(newFtpUrl).Replace("\\", "/").Replace("ftp:/", "ftp://") + "/";
-            UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
-            CreateFtpDirectory(ftpDirectory, account.username, account.password);
+
             // 遞歸上傳子文件夾中的文件
             UploadFilesRecursively(directory, newFtpUrl, account);
         }
