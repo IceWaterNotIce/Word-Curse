@@ -61,7 +61,7 @@ namespace FTP_Manager
             string fileName = Path.GetFileName(filePath);
             string uploadUrl = $"{ftpUrl}{fileName}";
 
-            Debug.Log($"Uploading file: {fileName}\n {filePath}\n To FTP server:\n {uploadUrl}");
+            Debug.Log($"Uploading file : {fileName}\n {filePath}\n To FTP server:\n {uploadUrl}");
 
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uploadUrl);
             request.Method = WebRequestMethods.Ftp.UploadFile;
@@ -73,7 +73,7 @@ namespace FTP_Manager
                 fileStream.CopyTo(requestStream);
             }
 
-            Debug.Log($"Uploaded file: {fileName}");
+            Debug.Log($"Uploaded file  : {fileName}");
         }
 
         public static void CreateFtpDirectory(string ftpUrl, string username, string password)
