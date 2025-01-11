@@ -152,101 +152,91 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         }
 
         // 開始遞歸上傳文件和文件夾
-        UploadFilesRecursively(localFolderPath, ftpUrl, account);
+        try
+        {
+            UploadDirectory(localFolderPath, ftpUrl, account.username, account.password);
+            Console.WriteLine("Upload complete.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+
 
         UnityEngine.Debug.Log("資源包已上傳到 FTP");
     }
-
-    private static void UploadFilesRecursively(string localFolderPath, string ftpUrl, FTPaccount account)
+    static void UploadDirectory(string localFolderPath, string ftpUrl, string username, string password)
     {
-        string ftpDirectory = Path.GetDirectoryName(ftpUrl).Replace("\\", "/").Replace("ftp:/", "ftp://") + "/";
-        UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
-        CreateFtpDirectory(ftpDirectory, account.username, account.password);
+        Console.WriteLine($"Uploading directory: {localFolderPath}");
+        Console.WriteLine($"To FTP server: {ftpUrl}");
 
-        // 上傳當前文件夾中的文件
-        string[] files = Directory.GetFiles(localFolderPath);
-        foreach (string localFilePath in files)
+        // Upload all files in the directory
+        foreach (string filePath in Directory.GetFiles(localFolderPath))
         {
-            string fileName = Path.GetFileName(localFilePath);
-            string fullFtpUrl = $"{ftpUrl}{fileName}";
-
-            // 上傳文件
-            UploadFile(fullFtpUrl, account.username, account.password, localFilePath);
+            UploadFile(filePath, ftpUrl, username, password);
         }
 
-        // 遞歸上傳子文件夾中的文件
-        string[] directories = Directory.GetDirectories(localFolderPath);
-        foreach (string directory in directories)
+        // Recurse into subdirectories
+        foreach (string directoryPath in Directory.GetDirectories(localFolderPath))
         {
-            // 獲取子文件夾名稱並創建對應的 FTP 文件夾 URL
-            string directoryName = Path.GetFileName(directory).Replace("\\", "/").Replace("ftp:/", "ftp://");
-            string newFtpUrl = $"{ftpUrl}{directoryName}/";
+            string newFtpUrl = $"{ftpUrl}{Path.GetFileName(directoryPath)}/";
 
-            // 遞歸上傳子文件夾中的文件
-            UploadFilesRecursively(directory, newFtpUrl, account);
+            // Create directory on FTP server
+            CreateFtpDirectory(newFtpUrl, username, password);
+
+            // Recursively upload the subdirectory
+            UploadDirectory(directoryPath, newFtpUrl, username, password);
         }
     }
-    static void UploadFile(string ftpUrl, string username, string password, string localFilePath)
+
+    static void UploadFile(string filePath, string ftpUrl, string username, string password)
     {
-        FileInfo fileInfo = new FileInfo(localFilePath);
-        if (!fileInfo.Exists)
-        {
-            UnityEngine.Debug.Log($"File does not exist: {localFilePath}");
-            return;
-        }
+        string fileName = Path.GetFileName(filePath);
+        string uploadUrl = $"{ftpUrl}{fileName}";
 
+        Console.WriteLine($"Uploading file: {filePath}");
+        Console.WriteLine($"To FTP server: {uploadUrl}");
 
-        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uploadUrl);
         request.Method = WebRequestMethods.Ftp.UploadFile;
         request.Credentials = new NetworkCredential(username, password);
-        request.ContentLength = fileInfo.Length;
 
-        using (FileStream fs = fileInfo.OpenRead())
+        using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
         using (Stream requestStream = request.GetRequestStream())
         {
-            fs.CopyTo(requestStream);
+            fileStream.CopyTo(requestStream);
         }
 
-        using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
-        {
-            UnityEngine.Debug.Log($"Uploaded {fileInfo.Name}, status {response.StatusDescription}");
-        }
+        Console.WriteLine($"Uploaded: {fileName}");
     }
 
-
-    private static void CreateFtpDirectory(string ftpDirectory, string username, string password)
+    static void CreateFtpDirectory(string ftpUrl, string username, string password)
     {
-
-        // 確保 FTP URL 是有效的
-        if (!Uri.IsWellFormedUriString(ftpDirectory, UriKind.Absolute))
-        {
-            UnityEngine.Debug.LogError("Invalid FTP URL: " + ftpDirectory);
-            return;
-        }
-        // 使用 FtpWebRequest 創建 FTP 目錄
-        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpDirectory);
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
         request.Method = WebRequestMethods.Ftp.MakeDirectory;
         request.Credentials = new NetworkCredential(username, password);
 
         try
         {
-            using (var response = (FtpWebResponse)request.GetResponse())
+            using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
             {
-                if (response.StatusCode != FtpStatusCode.ActionNotTakenFileUnavailable)
-                {
-                    UnityEngine.Debug.Log("Directory created: " + ftpDirectory);
-                }
+                Console.WriteLine($"Directory created: {ftpUrl}");
             }
         }
         catch (WebException ex)
         {
-            // 550 錯誤代表目錄已存在，忽略此錯誤
-            if (ex.Response is FtpWebResponse response && response.StatusCode != FtpStatusCode.ActionNotTakenFileUnavailable)
+            // Handle the case where the directory already exists
+            if (ex.Response is FtpWebResponse ftpResponse && ftpResponse.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
             {
-                UnityEngine.Debug.LogError("Failed to create directory: " + ex.Message);
+                Console.WriteLine($"Directory already exists: {ftpUrl}");
+            }
+            else
+            {
+                throw;
             }
         }
     }
+
     [System.Serializable]
     public class VersionConfig
     {
