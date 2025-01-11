@@ -190,7 +190,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             UnityEngine.Debug.Log($"File does not exist: {localFilePath}");
             return;
         }
-        string ftpDirectory = Path.GetDirectoryName(ftpUrl)+"\\";
+        string ftpDirectory = Path.GetDirectoryName(ftpUrl) + "\\";
         UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
         CreateFtpDirectory(ftpDirectory, username, password);
 
@@ -214,6 +214,13 @@ public class VersionIncrementor : IPreprocessBuildWithReport
 
     private static void CreateFtpDirectory(string ftpDirectory, string username, string password)
     {
+
+        // 確保 FTP URL 是有效的
+        if (!Uri.IsWellFormedUriString(ftpDirectory, UriKind.Absolute))
+        {
+            UnityEngine.Debug.LogError("Invalid FTP URL: " + ftpDirectory);
+            return;
+        }
         // 使用 FtpWebRequest 創建 FTP 目錄
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpDirectory);
         request.Method = WebRequestMethods.Ftp.MakeDirectory;
