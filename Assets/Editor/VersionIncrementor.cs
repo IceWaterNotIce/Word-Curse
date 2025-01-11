@@ -190,8 +190,8 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             UnityEngine.Debug.Log($"File does not exist: {localFilePath}");
             return;
         }
-
-        CreateFtpDirectory(ftpUrl, username, password);
+        string ftpDirectory = Path.GetDirectoryName(ftpUrl);
+        CreateFtpDirectory(ftpDirectory, username, password);
 
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
         request.Method = WebRequestMethods.Ftp.UploadFile;
