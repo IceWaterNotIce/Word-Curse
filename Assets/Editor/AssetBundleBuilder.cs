@@ -151,24 +151,12 @@ public class AssetBundleBuilder
         }
         string json = File.ReadAllText(accountFilePath);
         FTPaccount account = JsonUtility.FromJson<FTPaccount>(json) ?? new FTPaccount();
-
-        UnityEngine.Debug.Log("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        UnityEngine.Debug.Log("ftp -i " + account.host);
+        
+        UnityEngine.Debug.Log(account.host);
         UnityEngine.Debug.Log(account.username);
         UnityEngine.Debug.Log(account.password);
-        UnityEngine.Debug.Log("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        UnityEngine.Debug.Log("mput *");
 
-        RunCommand("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        RunCommand("ftp -i " + account.host);
-        RunCommand(account.username);
-        RunCommand(account.password);
-        RunCommand("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        RunCommand("mput *");
-        RunCommand("bye");
-
-
-
+        
     }
 
 
