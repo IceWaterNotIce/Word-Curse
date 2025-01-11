@@ -191,6 +191,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             return;
         }
         string ftpDirectory = Path.GetDirectoryName(ftpUrl);
+        UnityEngine.Debug.Log($"ftpDirectory: {ftpDirectory}");
         CreateFtpDirectory(ftpDirectory, username, password);
 
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
