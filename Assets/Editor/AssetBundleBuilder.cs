@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEditor.Build.Profile;
 using PlasticGui.WorkspaceWindow;
-
+using System.Net;
 public class AssetBundleBuilder
 {
     [MenuItem("Assets/Build AssetBundles")]
@@ -151,24 +151,54 @@ public class AssetBundleBuilder
         }
         string json = File.ReadAllText(accountFilePath);
         FTPaccount account = JsonUtility.FromJson<FTPaccount>(json) ?? new FTPaccount();
+        string localFolderPath = "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
+        string ftpUrl = account.host + BuildProfile.GetActiveBuildProfile().name + "/";
+        if (!Directory.Exists(localFolderPath))
+        {
+            UnityEngine.Debug.Log("Local folder does not exist.");
+            return;
+        }
 
-        UnityEngine.Debug.Log("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        UnityEngine.Debug.Log("ftp -i " + account.host);
-        UnityEngine.Debug.Log(account.username);
-        UnityEngine.Debug.Log(account.password);
-        UnityEngine.Debug.Log("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        UnityEngine.Debug.Log("mput *");
+        // 获取文件夹中的所有文件
+        string[] files = Directory.GetFiles(localFolderPath);
 
-        RunCommand("cd Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        RunCommand("ftp -i " + account.host);
-        RunCommand(account.username);
-        RunCommand(account.password);
-        RunCommand("cd domains/" + account.host + "/public_html/games/WordCurse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name);
-        RunCommand("mput *");
-        RunCommand("bye");
+        foreach (string localFilePath in files)
+        {
+            // 获取文件名
+            string fileName = Path.GetFileName(localFilePath);
+            // 创建完整的 FTP URL
+            string fullFtpUrl = $"{ftpUrl}{fileName}";
 
+            // 上传文件
+            UploadFile(fullFtpUrl, account.username, account.password, localFilePath);
+        }
 
 
+    }
+    static void UploadFile(string ftpUrl, string username, string password, string localFilePath)
+    {
+        FileInfo fileInfo = new FileInfo(localFilePath);
+        if (!fileInfo.Exists)
+        {
+            UnityEngine.Debug.Log($"File does not exist: {localFilePath}");
+            return;
+        }
+
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
+        request.Method = WebRequestMethods.Ftp.UploadFile;
+        request.Credentials = new NetworkCredential(username, password);
+        request.ContentLength = fileInfo.Length;
+
+        using (FileStream fs = fileInfo.OpenRead())
+        using (Stream requestStream = request.GetRequestStream())
+        {
+            fs.CopyTo(requestStream);
+        }
+
+        using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+        {
+            UnityEngine.Debug.Log($"Uploaded {fileInfo.Name}, status {response.StatusDescription}");
+        }
     }
 
 
