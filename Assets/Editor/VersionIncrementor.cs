@@ -25,7 +25,7 @@ public class VersionIncrementor : IPreprocessBuildWithReport
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string path)
     {
-        UnityEngine.Debug.Log("Build completed");
+        UnityEngine.Debug.Log("Build completed"); 
         UploadToFTP();
     }
 
