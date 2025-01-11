@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 15003, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: android
+  m_Name: android_test
   m_EditorClassIdentifier: 
   m_AssetVersion: 1
   m_BuildTarget: 13
   m_Subtarget: 0
   m_PlatformId: b9b35072a6f44c2e863f17467ea3dc13
   m_PlatformBuildProfile:
-    rid: 6827268452414128130
+    rid: 4425839128343216380
   m_OverrideGlobalSceneList: 0
   m_Scenes: []
   m_ScriptingDefines: []
@@ -26,14 +26,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6827268452414128130
+    - rid: 4425839128343216380
       type: {class: AndroidPlatformBuildSettings, ns: UnityEditor.Android, asm: UnityEditor.Android.Extensions}
       data:
         m_Development: 0
-        m_ConnectProfiler: 1
-        m_BuildWithDeepProfilingSupport: 1
-        m_AllowDebugging: 1
-        m_WaitForManagedDebugger: 1
+        m_ConnectProfiler: 0
+        m_BuildWithDeepProfilingSupport: 0
+        m_AllowDebugging: 0
+        m_WaitForManagedDebugger: 0
         m_ManagedDebuggerFixedPort: 0
         m_ExplicitNullChecks: 0
         m_ExplicitDivideByZeroChecks: 0
@@ -45,8 +45,8 @@ MonoBehaviour:
         m_ExportAsGoogleAndroidProject: 0
         m_DebugSymbolLevel: 1
         m_DebugSymbolFormat: 5
-        m_CurrentDeploymentTargetId: 192.168.31.203:43159
+        m_CurrentDeploymentTargetId: __builtin__target_default
         m_BuildType: 2
         m_BuildAppBundle: 0
-        m_IPAddressToConnect: 192.168.31.203:43159
+        m_IPAddressToConnect: 
         m_SymlinkSources: 0
