@@ -128,11 +128,9 @@ public class LobbySceneUIManager : MonoBehaviour
     {
         // sign out the user
         AuthenticationService.Instance.SignOut();
-        VisualElement userprofilePanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("UserProfilePanel");
-        VisualElement authPanel = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("AuthPanel");
-        //set attributes enabled
-        userprofilePanel.SetEnabled(false);
-        authPanel.SetEnabled(true);
+        //set attributes disabled
+        UserProfilePanel.style.display = DisplayStyle.None;
+        AuthPanel.style.display = DisplayStyle.Flex;
     }
 
     public void GoToGraphView()
