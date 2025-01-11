@@ -191,6 +191,8 @@ public class VersionIncrementor : IPreprocessBuildWithReport
             return;
         }
 
+        CreateFtpDirectory(ftpUrl, username, password);
+
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
         request.Method = WebRequestMethods.Ftp.UploadFile;
         request.Credentials = new NetworkCredential(username, password);
@@ -205,6 +207,34 @@ public class VersionIncrementor : IPreprocessBuildWithReport
         using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
         {
             UnityEngine.Debug.Log($"Uploaded {fileInfo.Name}, status {response.StatusDescription}");
+        }
+    }
+
+
+    private static void CreateFtpDirectory(string ftpDirectory, string username, string password)
+    {
+        // 使用 FtpWebRequest 創建 FTP 目錄
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpDirectory);
+        request.Method = WebRequestMethods.Ftp.MakeDirectory;
+        request.Credentials = new NetworkCredential(username, password);
+
+        try
+        {
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                if (response.StatusCode != FtpStatusCode.ActionNotTakenFileUnavailable)
+                {
+                    UnityEngine.Debug.Log("Directory created: " + ftpDirectory);
+                }
+            }
+        }
+        catch (WebException ex)
+        {
+            // 550 錯誤代表目錄已存在，忽略此錯誤
+            if (ex.Response is FtpWebResponse response && response.StatusCode != FtpStatusCode.ActionNotTakenFileUnavailable)
+            {
+                UnityEngine.Debug.LogError("Failed to create directory: " + ex.Message);
+            }
         }
     }
     [System.Serializable]
