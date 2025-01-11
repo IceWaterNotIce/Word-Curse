@@ -9,6 +9,8 @@ using System.Net;
 using FTP_Manager;
 public class AssetBundleBuilder
 {
+    const string baseUrl = "https://icewaternotice.com/games/Word%20Curse/AssetBundles/";
+
     [MenuItem("Assets/Build AssetBundles")]
     public static void BuildAllAssetBundles()
     {
@@ -97,7 +99,7 @@ public class AssetBundleBuilder
                 {
                     name = bundle,
                     version = "1.0",
-                    url = "https://icewaternotice.com/games/Word%20Curse/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
+                    url = baseUrl + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
                 });
             }
         }
