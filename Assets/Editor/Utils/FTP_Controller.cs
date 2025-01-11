@@ -5,6 +5,7 @@ using UnityEditor.Build.Profile;
 using UnityEngine;
 using System.Linq;
 
+
 namespace FTP_Manager
 {
 
@@ -17,20 +18,35 @@ namespace FTP_Manager
 
     public class FTP_Controller
     {
-        public static void UploadDirectory(string localFolderPath, string ftpUrl, string username, string password)
+        public static void UploadDirectory(string localFolderPath, string RemoteFolderPath, string host = null, string username = null, string password = null)
         {
-            Debug.Log($"Uploading Folder: {Path.GetFileName(localFolderPath)}\n {localFolderPath}\n To FTP server:\n {ftpUrl}");
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                string accountFilePath = "Assets/Editor/Utils/FTPaccount.json";
+                if (!File.Exists(accountFilePath))
+                {
+                    UnityEngine.Debug.LogError("account.json not found");
+                    return;
+                }
+                string json = File.ReadAllText(accountFilePath);
+                FTP_Account account = JsonUtility.FromJson<FTP_Account>(json) ?? new FTP_Account();
+                username = account.username;
+                password = account.password;
+                host = account.host;
+            }
+
+            Debug.Log($"Uploading Folder: {Path.GetFileName(localFolderPath)}\n {localFolderPath}\n To FTP server:\n {host}{RemoteFolderPath}");
 
             // Upload all files in the directory
             foreach (string filePath in Directory.GetFiles(localFolderPath))
             {
-                UploadFile(filePath, ftpUrl, username, password);
+                UploadFile(filePath, $"{host}{RemoteFolderPath}" , username, password);
             }
 
             // Recurse into subdirectories
             foreach (string directoryPath in Directory.GetDirectories(localFolderPath))
             {
-                string newFtpUrl = $"{ftpUrl}{Path.GetFileName(directoryPath)}/";
+                string newFtpUrl = $"{host}{RemoteFolderPath}{Path.GetFileName(directoryPath)}/";
 
                 // Create directory on FTP server
                 CreateFtpDirectory(newFtpUrl, username, password);

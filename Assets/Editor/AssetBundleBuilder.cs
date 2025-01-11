@@ -143,36 +143,10 @@ public class AssetBundleBuilder
     }
     private static void UploadToFTP()
     {
-        // get account info from editor/account.json
-        string accountFilePath = "Assets/Editor/FTPaccount.json";
-        if (!File.Exists(accountFilePath))
-        {
-            UnityEngine.Debug.LogError("account.json not found");
-            return;
-        }
-        string json = File.ReadAllText(accountFilePath);
-        FTPaccount account = JsonUtility.FromJson<FTPaccount>(json) ?? new FTPaccount();
+        
         string localFolderPath = "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
-        string ftpUrl = account.host + "AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
-        if (!Directory.Exists(localFolderPath))
-        {
-            UnityEngine.Debug.Log("Local folder does not exist.");
-            return;
-        }
-
-        // 获取文件夹中的所有文件
-        string[] files = Directory.GetFiles(localFolderPath);
-
-        foreach (string localFilePath in files)
-        {
-            // 获取文件名
-            string fileName = Path.GetFileName(localFilePath);
-            // 创建完整的 FTP URL
-            string fullFtpUrl = $"{ftpUrl}{fileName}";
-
-            // 上传文件
-            FTP_Controller.UploadFile(localFilePath, fullFtpUrl, account.username, account.password);
-        }
+        string ftpUrl = "AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/";
+        FTP_Controller.UploadDirectory(localFolderPath, ftpUrl);
 
         UnityEngine.Debug.Log("Asset Bundles uploaded to FTP");
 
