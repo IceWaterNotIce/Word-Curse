@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using MessageWindow;
 
 public class MessageSetup : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class MessageSetup : MonoBehaviour
         UIDocument uiDoc = GetComponent<UIDocument>();
         VisualElement root = uiDoc.rootVisualElement;
 
-        MessageWindow messageWindow = new MessageWindow();
+        MsgConfirmationDialog messageWindow = new MsgConfirmationDialog();
         root.Add(messageWindow);
 
         messageWindow.confirmed += () => Debug.Log("Confirmed");

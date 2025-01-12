@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement style="flex-grow: 1;">
+        <engine:Button text="Lobby" name="BtnGoToLobby" />
+        <engine:ListView name="LvWords" />
+        <engine:GroupBox name="InsertField">
+            <engine:TextField label="Word" placeholder-text="filler text" name="InputWord" />
+            <engine:TextField label="Definition" placeholder-text="filler text" name="InputDefinition" />
+            <engine:DropdownField label="Part of Speech" name="DdWordType" />
+            <engine:Button text="Submit" name="BtnSubmit" />
+        </engine:GroupBox>
+    </engine:VisualElement>
+</engine:UXML>

@@ -3,43 +3,82 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 public class WordViewSceneUIManager : MonoBehaviour
 {
-
-    public RuntimePlatform ThisCanvasPlatform;
-    private RuntimePlatform runtimePlatform;
     [Header("UI Elements")]
-    public TMP_InputField m_wordInput;
-    public TMP_InputField m_definitionInput;
-    public TMP_Dropdown m_wordDropdown;
+    UIDocument m_UIDocument;
+    VisualElement m_Root;
+
+    public UnityEngine.UIElements.Button m_BtnGoToLobby;
+    public VisualTreeAsset itemTemplate;
+    public ListView m_LvWords;
+    public TextField m_InputWord;
+    public TextField m_InputDefinition;
+    public DropdownField m_DdWordType;
+    public UnityEngine.UIElements.Button m_BtnSubmit;
     public WordJsonManager wordJsonManager;
-    public ScrollViewController scrollViewController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // show the canvas only on the right platform or in the editor
-        runtimePlatform = Application.platform;
-        gameObject.SetActive(runtimePlatform == ThisCanvasPlatform || runtimePlatform == RuntimePlatform.WindowsEditor);
+        itemTemplate = Resources.Load<VisualTreeAsset>("WordItemTemplate");
+        // Get the UIDocument component
+        m_UIDocument = GetComponent<UIDocument>();
 
-        // Set the dropdown options based on the WordType enum
-        m_wordDropdown.ClearOptions();
-        List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+        // Get the root of the VisualElement tree
+        m_Root = m_UIDocument.rootVisualElement;
+        // Get the GoToLobby button
+        m_BtnGoToLobby = m_Root.Q<UnityEngine.UIElements.Button>("BtnGoToLobby");
+        m_BtnGoToLobby.clicked += GoToLobby;
+        // Get the ListView
+        m_LvWords = m_Root.Q<ListView>("LvWords");
+        m_LvWords.makeItem = () => itemTemplate.CloneTree();
+        m_LvWords.bindItem = (e, i) =>
+        {
+            e.Q<Label>("LblWord").text = wordJsonManager.GetWords()[i].word;
+            e.Q<Label>("LblDefinition").text = wordJsonManager.GetWords()[i].definition;
+            e.Q<Label>("LblPartofSpeech").text = wordJsonManager.GetWords()[i].partofSpeech.ToString();
+        };
+        m_LvWords.fixedItemHeight = 50;
+        m_LvWords.itemsSource = wordJsonManager.GetWords();
+
+        m_LvWords.Rebuild();
+
+
+
+
+        // Get the input fields
+        m_InputWord = m_Root.Q<TextField>("InputWord");
+        m_InputDefinition = m_Root.Q<TextField>("InputDefinition");
+        // Get the submit button
+        m_BtnSubmit = m_Root.Q<UnityEngine.UIElements.Button>("BtnSubmit");
+        m_BtnSubmit.clicked += OnSubmit;
+        // Get the WordType dropdown
+        m_DdWordType = m_Root.Q<DropdownField>("DdWordType");
+        List<string> options = new List<string>();
         foreach (PartofSpeech partofSpeech in (PartofSpeech[])System.Enum.GetValues(typeof(PartofSpeech)))
         {
-            options.Add(new TMP_Dropdown.OptionData(partofSpeech.ToString()));
+            options.Add(partofSpeech.ToString());
         }
-        m_wordDropdown.AddOptions(options);
+        m_DdWordType.choices = options;
     }
     async void OnEnable()
     {
         await wordJsonManager.LoadFromCloud();
         wordJsonManager.SaveToLocal();
-        scrollViewController.LoadWords();
+        refreshList();
+
     }
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void refreshList()
+    {
+        m_LvWords.itemsSource = wordJsonManager.GetWords();
+        m_LvWords.Rebuild();
     }
 
     public void GoToLobby()
@@ -50,6 +89,10 @@ public class WordViewSceneUIManager : MonoBehaviour
 
     public void OnSubmit()
     {
-        wordJsonManager.InsertWord(m_wordInput.text, m_definitionInput.text, (PartofSpeech)m_wordDropdown.value);
+        wordJsonManager.InsertWord(m_InputWord.value, m_InputDefinition.value, (PartofSpeech)System.Enum.Parse(typeof(PartofSpeech), m_DdWordType.value));
+        //clear the input fields
+        m_InputWord.SetValueWithoutNotify("");
+        m_InputDefinition.SetValueWithoutNotify("");
+        m_DdWordType.value = m_DdWordType.choices[0];
     }
 }

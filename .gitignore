@@ -85,3 +85,6 @@ Assets/Resources/PerformanceTestRunSettings.json
 ProjectSettings/EditorBuildSettings.asset
 ProjectSettings/ProjectSettings.asset
 Assets/Editor/FTPaccount.json
+Assets/Editor/Utils/FTPaccount.json
+
+.sync/

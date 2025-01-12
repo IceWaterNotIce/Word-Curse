@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using MessageWindow;
+using UnityEngine.UIElements;
 
 namespace InternetEmpire
 {
@@ -19,6 +21,7 @@ namespace InternetEmpire
 
         void Start()
         {
+
             CheckNetwork();
             Check();
         }
@@ -58,7 +61,7 @@ namespace InternetEmpire
                 if (Application.internetReachability == NetworkReachability.NotReachable)
                 {
                     // Show network error panel
-                    MessageManager.Instance.CreateCloseMessage("No network connection. Please check your network settings first.", QuitGame);
+                    MessageManager.Instance.CreateYesNoMessage("No network connection. Please check your network settings first.", QuitGame, null);
                 }
             }
         }
@@ -70,7 +73,7 @@ namespace InternetEmpire
             {
                 UpdateChecker updateChecker = FindFirstObjectByType<UpdateChecker>();
                 Debug.Log("有新版本可用: " + updateChecker.versionInfo.latestVersion);
-                    // 可以提示用戶下載新版本
+                // 可以提示用戶下載新版本
                 MessageManager.Instance.CreateYesNoMessage("There is a new version available. This game needs to run on the latest version. Do you want to update now?", UpdateGame, QuitGame);
             }
             else

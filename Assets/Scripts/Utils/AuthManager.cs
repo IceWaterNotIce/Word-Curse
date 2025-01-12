@@ -26,7 +26,7 @@ public class AuthManager : MonoBehaviour
         
     }
 
-    async void OnEnable()
+    void OnEnable()
     {
     }
   
