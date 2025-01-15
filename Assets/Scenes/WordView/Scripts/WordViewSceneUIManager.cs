@@ -1,9 +1,9 @@
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
+
+
 public class WordViewSceneUIManager : MonoBehaviour
 {
     [Header("UI Elements")]

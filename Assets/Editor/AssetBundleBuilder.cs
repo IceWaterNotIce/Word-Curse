@@ -9,7 +9,6 @@ using System.Net;
 using FTP_Manager;
 public class AssetBundleBuilder
 {
-    const string baseUrl = "https://icewaternotice.com/games/Word%20Curse/AssetBundles/";
 
     [MenuItem("Assets/Build AssetBundles")]
     public static void BuildAllAssetBundles()
@@ -65,6 +64,18 @@ public class AssetBundleBuilder
     }
     private static void UpdateVersionJson()
     {
+        // 從 editor/account.json 獲取帳戶信息
+        string accountFilePath = "Assets/Editor/Utils/FTPaccount.json";
+        if (!File.Exists(accountFilePath))
+        {
+            UnityEngine.Debug.LogError("FTP account file not found.");
+            return;
+        }
+
+        string accountjson = File.ReadAllText(accountFilePath);
+        FTP_Account account = JsonUtility.FromJson<FTP_Account>(accountjson) ?? new FTP_Account();
+        string ftpUrl = account.host + "AssetBundles/";
+
         // local version.json
         string versionFilePath = "Assets/AssetBundles/" + BuildProfile.GetActiveBuildProfile().name + "/version.json";
         if (!File.Exists(versionFilePath))
@@ -99,7 +110,7 @@ public class AssetBundleBuilder
                 {
                     name = bundle,
                     version = "1.0",
-                    url = baseUrl + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
+                    url = ftpUrl + BuildProfile.GetActiveBuildProfile().name + "/" + bundle
                 });
             }
         }
