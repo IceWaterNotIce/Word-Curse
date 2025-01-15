@@ -164,7 +164,6 @@ public class AssetBundleBuilder
         using (Process process = Process.Start(processStartInfo))
         {
             process.WaitForExit();
-            UnityEngine.Debug.Log(process.StandardOutput.ReadToEnd());
         }
     }
 
