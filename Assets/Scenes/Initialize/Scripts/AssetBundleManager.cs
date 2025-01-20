@@ -14,49 +14,28 @@ public class AssetBundleManager : MonoBehaviour
 
     void Awake()
     {
-        string platform = new string("");
-        string platformFilePath = new string("");
-        if (Application.platform == RuntimePlatform.Android)
+        // load platform.txt
+        string platform = Resources.Load<TextAsset>("platform").text;
+        if( platform == null)
         {
-            platformFilePath = Path.Combine(Application.persistentDataPath, "platform.txt");
-        }
-        else
-        {
-            platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
-        }
-
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            // if file does not exist, create it
-            if (!System.IO.File.Exists(platformFilePath))
-            {
-                System.IO.File.Create(platformFilePath).Close();
-                System.IO.File.WriteAllText(platformFilePath, "android");
-            }
-        }
-
-        // Check the local version config file exists
-        if (System.IO.File.Exists(platformFilePath))
-        {
-            platform = System.IO.File.ReadAllText(platformFilePath);
+            Debug.LogError("platform is null");
+            return;
         }
 
         // Set the remote version url
-
         remoteVersionUrl = GameManager.serverUrl + "/AssetBundles/" + platform + "/version.json";
 
+        // Set the local version path and download path 
         if (Application.platform == RuntimePlatform.Android)
         {
             localVersionPath = Path.Combine(Application.persistentDataPath, "Bundles/version.json");
             downloadPath = Path.Combine(Application.persistentDataPath, "Bundles");
-            
         }
         else
         {
             localVersionPath = Path.Combine(Application.streamingAssetsPath, "Bundles/version.json");
             downloadPath = Path.Combine(Application.streamingAssetsPath, "Bundles");
         }
-
     }
 
     // Start is called before the first frame update

@@ -43,7 +43,7 @@ public class GameBuilder : IPreprocessBuildWithReport
         string json = File.ReadAllText(accountFilePath);
         FTP_Account account = JsonUtility.FromJson<FTP_Account>(json) ?? new FTP_Account();
         string localFolderPath = "Builds/" + BuildProfile.GetActiveBuildProfile().name + "/";
-        string ftpUrl = account.host + BuildProfile.GetActiveBuildProfile().name + "/";
+        string ftpUrl = BuildProfile.GetActiveBuildProfile().name + "/";
 
         if (!Directory.Exists(localFolderPath))
         {
@@ -54,6 +54,7 @@ public class GameBuilder : IPreprocessBuildWithReport
         // 開始遞歸上傳文件和文件夾
         try
         {
+            UnityEngine.Debug.Log("ftpurl: " + ftpUrl);
             FTP_Controller.UploadDirectory(localFolderPath, ftpUrl, account.username, account.password);
             UnityEngine.Debug.Log("Game files uploaded to FTP");
         }
