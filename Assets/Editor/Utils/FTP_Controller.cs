@@ -5,10 +5,8 @@ using UnityEditor.Build.Profile;
 using UnityEngine;
 using System.Linq;
 
-
 namespace FTP_Manager
 {
-
     public class FTP_Account
     {
         public string host;
@@ -40,7 +38,7 @@ namespace FTP_Manager
             // Upload all files in the directory
             foreach (string filePath in Directory.GetFiles(localFolderPath))
             {
-                UploadFile(filePath, $"{host}{RemoteFolderPath}" , username, password);
+                UploadFile(filePath, $"{host}{RemoteFolderPath}", username, password);
             }
 
             Debug.Log($"Uploaded  Folder : {Path.GetFileName(localFolderPath)}");

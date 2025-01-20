@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using UnityEditor.Build.Profile;
-using PlasticGui.WorkspaceWindow;
-using System.Net;
 using FTP_Manager;
 public class AssetBundleBuilder
 {

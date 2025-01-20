@@ -5,22 +5,17 @@ public class InitializeSceneUIManager : MonoBehaviour
 {
     VisualElement root;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Get the root visual element
         root = GetComponent<UIDocument>().rootVisualElement;
-        // Get the version label
-        Label versionLabel = root.Q<Label>("LabelVersion");
-        // Set the version label text
-        Debug.Log("Version: " + Application.version);
+
+        Label versionLabel = root.Q<Label>("lblVersion");
         versionLabel.text = "Version: " + Application.version.ToString();
+        // Debug.Log("Version: " + Application.version);
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
-
 }

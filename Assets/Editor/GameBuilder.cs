@@ -68,7 +68,7 @@ public class GameBuilder : IPreprocessBuildWithReport
     {
         // load txt from resources
         string platform = BuildProfile.GetActiveBuildProfile().name;
-        string platformFilePath = Path.Combine(Application.streamingAssetsPath, "platform.txt");
+        string platformFilePath = Path.Combine(Application.dataPath, "Resources", "platform.txt");
         File.WriteAllText(platformFilePath, platform);
     }
 

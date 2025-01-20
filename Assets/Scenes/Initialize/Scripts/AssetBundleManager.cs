@@ -41,7 +41,9 @@ public class AssetBundleManager : MonoBehaviour
             platform = System.IO.File.ReadAllText(platformFilePath);
         }
 
-        remoteVersionUrl = "https://raw.githubusercontent.com/IceWaterNotIce/Word-Curse/main/Assets/AssetBundles/" + platform + "/version.json";
+        // Set the remote version url
+
+        remoteVersionUrl = GameManager.serverUrl + "/AssetBundles/" + platform + "/version.json";
 
         if (Application.platform == RuntimePlatform.Android)
         {
