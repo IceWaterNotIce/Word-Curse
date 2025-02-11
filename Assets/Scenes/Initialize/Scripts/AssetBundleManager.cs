@@ -56,7 +56,7 @@ public class AssetBundleManager : MonoBehaviour
 
         if (File.Exists(localVersionPath))
         {
-            string localJson = File.ReadAllText(localVersionPath);
+            string localJson = File.ReadAllText(localVersionPath);  
             localConfig = JsonUtility.FromJson<VersionConfig>(localJson);
         }
         // Fetch remote version
